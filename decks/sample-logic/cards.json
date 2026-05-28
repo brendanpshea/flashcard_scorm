@@ -1,0 +1,61 @@
+{
+  "deck": {
+    "id": "phil101-logic",
+    "title": "Intro Logic — Core Terms",
+    "version": 1,
+    "cards": [
+      {
+        "id": "c001",
+        "mode": "typed",
+        "prompt": "What do we call an argument whose premises guarantee its conclusion?",
+        "answers": ["valid", "a valid argument"],
+        "fuzzy": { "max_edit_distance": 2, "case_sensitive": false },
+        "tags": ["validity"],
+        "hint": "Think about logical form, not truth."
+      },
+      {
+        "id": "c002",
+        "mode": "cloze",
+        "text": "An argument is {{sound}} when it is valid and all its premises are true.",
+        "acceptable": { "sound": ["sound"] },
+        "tags": ["soundness"]
+      },
+      {
+        "id": "c003",
+        "mode": "mc",
+        "prompt": "Which fallacy attacks the person rather than their argument?",
+        "correct": "ad hominem",
+        "distractors": ["straw man", "red herring", "appeal to authority"],
+        "shuffle": true,
+        "tags": ["fallacies"]
+      },
+      {
+        "id": "c004",
+        "mode": "typed",
+        "prompt": "Name the rule of inference: 'If P then Q; P; therefore Q.'",
+        "answers": ["modus ponens"],
+        "fuzzy": { "max_edit_distance": 2, "case_sensitive": false },
+        "tags": ["rules-of-inference"]
+      },
+      {
+        "id": "c005",
+        "mode": "mc",
+        "prompt": "Which of these is a deductively invalid form?",
+        "correct": "affirming the consequent",
+        "distractors": ["modus tollens", "modus ponens", "hypothetical syllogism"],
+        "shuffle": true,
+        "tags": ["fallacies", "rules-of-inference"]
+      },
+      {
+        "id": "c006",
+        "mode": "cloze",
+        "text": "A {{deductive}} argument aims for certainty; an {{inductive}} argument aims for probability.",
+        "acceptable": {
+          "deductive": ["deductive"],
+          "inductive": ["inductive"]
+        },
+        "tags": ["argument-types"]
+      }
+    ]
+  }
+}

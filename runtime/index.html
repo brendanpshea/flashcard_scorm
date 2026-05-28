@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Flashcards</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="./scorm-wrapper.js"></script>
+</head>
+<body>
+  <div id="intro" class="intro" hidden>
+    <div class="intro-card">
+      <div class="intro-screens">
+        <section class="intro-screen" data-screen="1">
+          <h2>How this works</h2>
+          <p>Cards you struggle with come back sooner. Cards you know drift further out.</p>
+          <p>This is <strong>spaced repetition</strong> — it's how memory actually works. Short, regular sessions beat cramming, every time.</p>
+          <div class="interval-diagram">
+            <span>now</span><span>1d</span><span>3d</span><span>7d</span><span>14d</span><span>30d</span>
+          </div>
+        </section>
+        <section class="intro-screen" data-screen="2" hidden>
+          <h2>How you're graded</h2>
+          <p>Your score has three parts, and they multiply:</p>
+          <ul class="grade-parts">
+            <li><strong>Mastery</strong> — did you actually learn the cards?</li>
+            <li><strong>Engagement</strong> — did you study across many days, not just one?</li>
+            <li><strong>Completion</strong> — did you work through the whole deck, not just the easy cards?</li>
+          </ul>
+          <p class="muted">You can't max out by cramming, and you can't max out by clicking through quickly. Steady study wins.</p>
+        </section>
+        <section class="intro-screen" data-screen="3" hidden>
+          <h2>You're ready</h2>
+          <p>Aim for short sessions across multiple days. If you get a card wrong, that's fine — you'll see it again soon.</p>
+          <p class="muted">You can reopen this intro any time using the <strong>?</strong> button in the header.</p>
+        </section>
+      </div>
+      <div class="intro-nav">
+        <button id="intro-skip" class="link-btn">Skip</button>
+        <div class="intro-dots">
+          <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+        <button id="intro-next">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <h1 id="deck-title">Loading…</h1>
+    <span id="course-tag" class="tag"></span>
+    <div class="header-spacer"></div>
+    <div class="streak" id="streak" title="Correct answers in a row this session">
+      <span class="streak-icon">★</span><span id="streak-count">0</span>
+    </div>
+    <button id="show-intro" class="icon-btn" title="How this works">?</button>
+  </header>
+
+  <div class="mastery-bar-wrap" title="Mastery progress across the whole deck">
+    <div class="mastery-bar"><div id="mastery-fill" class="mastery-fill"></div></div>
+  </div>
+
+  <main>
+    <section id="card" class="card">
+      <div id="card-body"></div>
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+      <div class="actions">
+        <button id="submit-btn">Submit</button>
+        <button id="next-btn" hidden disabled>Next</button>
+      </div>
+    </section>
+    <aside class="stats">
+      <div class="stat-row"><label>Mastery</label><span id="stat-mastery">—</span></div>
+      <div class="stat-row"><label>Engagement</label><span id="stat-engagement">—</span></div>
+      <div class="stat-row"><label>Completion</label><span id="stat-completion">—</span></div>
+      <div class="stat-row big"><label>Score</label><span id="stat-final">—</span></div>
+      <hr />
+      <div class="stat-row"><label>New today</label><span id="stat-new">0 / 0</span></div>
+      <div class="stat-row"><label>Reviews today</label><span id="stat-reviews">0 / 0</span></div>
+    </aside>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
