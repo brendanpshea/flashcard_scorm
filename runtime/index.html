@@ -7,14 +7,14 @@
   <script src="./scorm-wrapper.js"></script>
 </head>
 <body>
-  <div id="intro" class="intro" hidden>
+  <div id="intro" class="intro" hidden role="dialog" aria-modal="true" aria-labelledby="intro-heading">
     <div class="intro-card">
       <div class="intro-screens">
         <section class="intro-screen" data-screen="1">
-          <h2>How this works</h2>
+          <h2 id="intro-heading">How this works</h2>
           <p>Cards you struggle with come back sooner. Cards you know drift further out.</p>
           <p>This is <strong>spaced repetition</strong> — it's how memory actually works. Short, regular sessions beat cramming, every time.</p>
-          <div class="interval-diagram">
+          <div class="interval-diagram" aria-hidden="true">
             <span>now</span><span>1d</span><span>3d</span><span>7d</span><span>14d</span><span>30d</span>
           </div>
         </section>
@@ -36,7 +36,7 @@
       </div>
       <div class="intro-nav">
         <button id="intro-skip" class="link-btn">Skip</button>
-        <div class="intro-dots">
+        <div class="intro-dots" aria-hidden="true">
           <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
         </div>
         <button id="intro-next">Next</button>
@@ -48,33 +48,56 @@
     <h1 id="deck-title">Loading…</h1>
     <span id="course-tag" class="tag"></span>
     <div class="header-spacer"></div>
-    <div class="streak" id="streak" title="Correct answers in a row this session">
-      <span class="streak-icon">★</span><span id="streak-count">0</span>
+    <div class="streak" id="streak" title="Correct answers in a row this session" aria-label="Session streak">
+      <span class="streak-icon" aria-hidden="true">★</span><span id="streak-count">0</span>
     </div>
-    <button id="show-intro" class="icon-btn" title="How this works">?</button>
+    <button id="show-intro" class="icon-btn" title="How this works" aria-label="How this works">?</button>
   </header>
 
-  <div class="mastery-bar-wrap" title="Mastery progress across the whole deck">
-    <div class="mastery-bar"><div id="mastery-fill" class="mastery-fill"></div></div>
+  <div class="mastery-bar-wrap" title="Lighter = practiced. Darker = mastered."
+       role="progressbar" aria-label="Mastery progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="mastery-bar">
+    <div class="mastery-bar">
+      <div id="started-fill" class="started-fill"></div>
+      <div id="mastery-fill" class="mastery-fill"></div>
+    </div>
   </div>
 
   <main>
-    <section id="card" class="card">
+    <section id="card" class="card" aria-label="Current card">
+      <div id="study-mode-banner" class="study-mode-banner" hidden role="note">
+        📚 Study ahead — this won't change your grade.
+      </div>
       <div id="card-body"></div>
-      <div id="feedback" class="feedback" aria-live="polite"></div>
+      <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
       <div class="actions">
         <button id="submit-btn">Submit</button>
         <button id="next-btn" hidden disabled>Next</button>
+        <button id="study-ahead-btn" hidden class="link-btn">Study ahead</button>
       </div>
     </section>
-    <aside class="stats">
-      <div class="stat-row"><label>Mastery</label><span id="stat-mastery">—</span></div>
-      <div class="stat-row"><label>Engagement</label><span id="stat-engagement">—</span></div>
-      <div class="stat-row"><label>Completion</label><span id="stat-completion">—</span></div>
-      <div class="stat-row big"><label>Score</label><span id="stat-final">—</span></div>
+    <aside class="stats" aria-label="Study statistics">
+      <div class="today-panel">
+        <div class="today-title">Today</div>
+        <div class="today-big" id="today-practiced">0</div>
+        <div class="today-sub">cards practiced</div>
+        <div class="today-detail">
+          <span id="today-correct">0 correct</span> ·
+          <span id="today-accuracy">—</span>
+        </div>
+      </div>
       <hr />
       <div class="stat-row"><label>New today</label><span id="stat-new">0 / 0</span></div>
       <div class="stat-row"><label>Reviews today</label><span id="stat-reviews">0 / 0</span></div>
+      <hr />
+      <div class="stat-row"><label>Mastered</label><span id="stat-mastery">—</span></div>
+      <div class="stat-row"><label>Engagement</label><span id="stat-engagement">—</span></div>
+      <div class="stat-row"><label>Completion</label><span id="stat-completion">—</span></div>
+      <div class="stat-row big" id="score-row">
+        <label>Gradebook score</label><span id="stat-final">—</span>
+      </div>
+      <div class="score-narrative" id="score-narrative" hidden></div>
+      <hr />
+      <button id="reset-btn" class="link-btn danger" aria-label="Reset all progress">Reset progress</button>
     </aside>
   </main>
   <script type="module" src="./app.js"></script>

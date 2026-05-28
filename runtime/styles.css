@@ -57,8 +57,15 @@ header h1 { margin: 0; font-size: 1.15rem; font-weight: 600; }
   height: 6px; background: var(--line); border-radius: 999px;
   overflow: hidden; max-width: 1100px; margin: 0 auto;
 }
+.mastery-bar { position: relative; }
+.started-fill {
+  position: absolute; left: 0; top: 0; height: 100%; width: 0%;
+  background: var(--accent-soft);
+  transition: width 0.4s ease;
+}
 .mastery-fill {
-  height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #e0a456);
+  position: absolute; left: 0; top: 0; height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), #e0a456);
   transition: width 0.4s ease;
 }
 
@@ -216,6 +223,64 @@ button:disabled { background: var(--line); color: var(--muted); cursor: not-allo
   transition: background 0.2s;
 }
 .dot.active { background: var(--accent); }
+
+/* Cloze per-blank reveal */
+.cloze-input.blank-ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.cloze-input.blank-bad { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.cloze-input.blank-close { background: var(--warn-soft); border-color: var(--warn); color: #6c4f10; }
+
+/* Study-ahead banner */
+.study-mode-banner {
+  background: var(--accent-soft); color: var(--accent);
+  padding: 0.5rem 0.85rem; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem;
+  border: 1px dashed var(--accent);
+}
+
+/* Danger button */
+.link-btn.danger { color: var(--bad); margin-top: 0.5rem; width: 100%; text-align: left; }
+.link-btn.danger:hover { background: var(--bad-soft); color: var(--bad); }
+
+/* Focus rings — accessibility */
+button:focus-visible {
+  outline: 3px solid var(--accent); outline-offset: 2px;
+}
+.choices label:focus-within { box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* Today panel — the immediate-feedback hero */
+.today-panel {
+  background: var(--accent-soft);
+  border-radius: 10px;
+  padding: 0.9rem 1rem 1rem;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+.today-title {
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--accent); text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.today-big {
+  font-size: 2.4rem; font-weight: 700; color: var(--accent);
+  line-height: 1.1; margin: 0.15rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.today-sub { font-size: 0.85rem; color: var(--muted); }
+.today-detail {
+  font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem;
+}
+
+.score-narrative {
+  font-size: 0.8rem; color: var(--muted);
+  font-style: italic; padding: 0 0.1rem 0.3rem;
+  line-height: 1.4;
+}
+
+/* Visually hidden but available to screen readers */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

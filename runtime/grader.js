@@ -14,13 +14,21 @@ export function gradeAnswer(card, response, latencyMs, settings) {
   } else if (card.mode === "mc") {
     correct = response === card.correct;
   } else if (card.mode === "cloze") {
-    // response: { key: text, ... }
     const cs = card.case_sensitive ?? false;
     const tol = card.fuzzy?.max_edit_distance ?? 1;
-    correct = Object.keys(card.acceptable).every(k => {
+    const perBlank = {};
+    let allCorrect = true, anyClose = false;
+    for (const k of Object.keys(card.acceptable)) {
       const r = norm(response?.[k] ?? "", cs);
-      return card.acceptable[k].some(a => editDistance(norm(a, cs), r) <= tol);
-    });
+      const ok = card.acceptable[k].some(a => editDistance(norm(a, cs), r) <= tol);
+      const closeOnly = !ok && card.acceptable[k].some(a => editDistance(norm(a, cs), r) <= tol + 2);
+      perBlank[k] = { correct: ok, close: closeOnly };
+      if (!ok) allCorrect = false;
+      if (closeOnly) anyClose = true;
+    }
+    correct = allCorrect;
+    close = !correct && anyClose;
+    var cloze_per_blank = perBlank;
   }
 
   let quality;
@@ -29,7 +37,7 @@ export function gradeAnswer(card, response, latencyMs, settings) {
   else if (close) quality = 2;
   else quality = 1;
 
-  return { quality, correct, productive };
+  return { quality, correct, productive, perBlank: typeof cloze_per_blank !== "undefined" ? cloze_per_blank : null };
 }
 
 function norm(s, caseSensitive) {

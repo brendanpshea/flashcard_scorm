@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test": "node tests/test.mjs",
+    "validate": "node tools/validate.js decks/sample-logic/cards.json",
+    "md2json": "node tools/md2json.js",
     "build:5week": "node build.js --deck decks/sample-logic/cards.json --settings decks/sample-logic/settings-5week.json --out dist/sample-logic-5week.zip",
     "build:16week": "node build.js --deck decks/sample-logic/cards.json --settings decks/sample-logic/settings-16week.json --out dist/sample-logic-16week.zip",
     "preview:5week": "node build.js --deck decks/sample-logic/cards.json --settings decks/sample-logic/settings-5week.json --preview preview/5week",
     "preview:16week": "node build.js --deck decks/sample-logic/cards.json --settings decks/sample-logic/settings-16week.json --preview preview/16week",
-    "serve": "node serve.js"
+    "serve": "node serve.js preview/5week 8080"
   }
 }

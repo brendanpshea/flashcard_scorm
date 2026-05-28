@@ -51,6 +51,7 @@ function run() {
 function collectFiles() {
   const out = [];
   for (const name of fs.readdirSync(runtimeDir)) {
+    if (name === "package.json") continue;  // Node-only scoping, not a runtime asset
     out.push({ name, data: fs.readFileSync(path.join(runtimeDir, name)) });
   }
   out.push({ name: "cards.json", data: fs.readFileSync(deckPath) });

@@ -31,6 +31,7 @@
       <file href="sm2.js"/>
       <file href="grader.js"/>
       <file href="scoring.js"/>
+      <file href="persistence.js"/>
       <file href="scorm-wrapper.js"/>
       <file href="styles.css"/>
       <file href="cards.json"/>

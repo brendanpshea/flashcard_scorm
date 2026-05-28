@@ -2,27 +2,41 @@
 import { isMastered } from "./sm2.js";
 
 export function computeScore(cards, stateMap, activityLog, settings) {
+  const req = settings.scoring.mastery_requires;
   const total = cards.length;
-  let mastered = 0, attemptedSeriously = 0;
+  let mastered = 0, attemptedSeriously = 0, started = 0;
+  let masteryProgressSum = 0;
   for (const card of cards) {
     const st = stateMap[card.id];
     if (!st) continue;
-    if (isMastered(st, settings.scoring.mastery_requires)) mastered += 1;
+    if (st.attempts >= 1) started += 1;
     if (st.attempts >= 2 && st.correct_count >= 1) attemptedSeriously += 1;
+    if (isMastered(st, req)) mastered += 1;
+
+    // Continuous per-card progress toward mastery: average of the two
+    // requirements, each capped at 1. Gives day-1 students visible movement.
+    const correctProgress = Math.min(1, st.correct_count / req.correct_count);
+    const intervalProgress = Math.min(1, st.interval_days / req.min_interval_days);
+    masteryProgressSum += (correctProgress + intervalProgress) / 2;
   }
   const mastery = total ? mastered / total : 0;
+  const masteryProgress = total ? masteryProgressSum / total : 0;
   const completion = total ? attemptedSeriously / total : 0;
+  const startedFraction = total ? started / total : 0;
   const engagement = computeEngagement(activityLog, cards.length, settings);
 
   const floor = settings.scoring.engagement_floor;
   const engMultiplier = floor + (1 - floor) * engagement;
 
+  // Grade sent to D2L — unchanged.
   const final = mastery * engMultiplier * completion;
   return {
     final,
     mastery,
+    masteryProgress,        // continuous; used for the visible bar only
     engagement,
     completion,
+    startedFraction,        // for the two-tier bar
     mastered_count: mastered,
     total_cards: total
   };
