@@ -1,0 +1,109 @@
+{
+  "deck": {
+    "id": "phil101-multi",
+    "title": "Intro Logic — Multi-file Sample",
+    "version": 1,
+    "cards": [
+      {
+        "mode": "typed",
+        "tags": [
+          "validity"
+        ],
+        "hint": "Think about logical form, not truth.",
+        "prompt": "What do we call an argument whose premises guarantee its conclusion?",
+        "answers": [
+          "valid",
+          "a valid argument"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c001"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "soundness"
+        ],
+        "text": "An argument is {{sound}} when it is valid and all its premises are true.",
+        "acceptable": {
+          "sound": [
+            "sound"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c002"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "fallacies"
+        ],
+        "correct": "ad hominem",
+        "prompt": "Which fallacy attacks the person rather than their argument?",
+        "distractors": [
+          "straw man",
+          "red herring",
+          "appeal to authority"
+        ],
+        "shuffle": true,
+        "id": "c003"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "fallacies",
+          "rules-of-inference"
+        ],
+        "correct": "affirming the consequent",
+        "prompt": "Which of these is a deductively invalid form?",
+        "distractors": [
+          "modus tollens",
+          "modus ponens",
+          "hypothetical syllogism"
+        ],
+        "shuffle": true,
+        "id": "c004"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "rules-of-inference"
+        ],
+        "prompt": "Name the rule of inference: \"If P then Q; P; therefore Q.\"",
+        "answers": [
+          "modus ponens"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c005"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "argument-types"
+        ],
+        "text": "A {{deductive}} argument aims for certainty; an {{inductive}} argument aims for probability.",
+        "acceptable": {
+          "deductive": [
+            "deductive"
+          ],
+          "inductive": [
+            "inductive"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c006"
+      }
+    ]
+  }
+}
