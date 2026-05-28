@@ -1,0 +1,1461 @@
+{
+  "deck": {
+    "id": "bioethics-unit-1",
+    "title": "Bioethics Unit 1 — Foundations, Research, and Abortion",
+    "version": 1,
+    "cards": [
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "foundations",
+          "bioethics"
+        ],
+        "prompt": "What field is the systematic study of ethical questions in patient care, research, public health, and biotechnology?",
+        "answers": [
+          "bioethics"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c001"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "foundations",
+          "ethics-branches"
+        ],
+        "prompt": "Which branch of ethics reports what people actually believe and do?",
+        "answers": [
+          "descriptive ethics"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c002"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "foundations",
+          "ethics-branches"
+        ],
+        "prompt": "Which branch of ethics asks what moral claims are and whether they are objective, true, or expressions of feeling?",
+        "answers": [
+          "metaethics",
+          "meta-ethics"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c003"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-01a",
+          "foundations",
+          "normative-ethics"
+        ],
+        "text": "Bioethics is a form of {{applied_normative_ethics}}.",
+        "acceptable": {
+          "applied_normative_ethics": [
+            "applied normative ethics"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c004"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-01a",
+          "foundations",
+          "distinctions"
+        ],
+        "correct": "legal",
+        "prompt": "Which type of claim answers the question \"What may or must we do under law?\"",
+        "distractors": [
+          "ethical",
+          "religious",
+          "personal preference"
+        ],
+        "shuffle": true,
+        "id": "c005"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "autonomy"
+        ],
+        "text": "In the lecture's \"fourth-grade morality\" table, \"Ask first; don't push people around\" becomes {{autonomy}} in the clinic.",
+        "acceptable": {
+          "autonomy": [
+            "autonomy"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c006"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "beneficence"
+        ],
+        "text": "In the lecture's \"fourth-grade morality\" table, \"Help people who are hurt\" becomes {{beneficence}} in the clinic.",
+        "acceptable": {
+          "beneficence": [
+            "beneficence"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c007"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "non-maleficence"
+        ],
+        "prompt": "Which principle is usually summarized as \"do no harm\" in clinical ethics?",
+        "answers": [
+          "non-maleficence",
+          "nonmaleficence"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c008"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "justice"
+        ],
+        "prompt": "Which principle is captured by the child's rule \"Share fairly; no favorites\"?",
+        "answers": [
+          "justice"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c009"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "reasoning",
+          "common-morality"
+        ],
+        "prompt": "What term means making a rough concept we already use more precise and usable without replacing it?",
+        "answers": [
+          "explication"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c010"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "utilitarianism"
+        ],
+        "prompt": "What name did Mill give to the rule that actions are right insofar as they promote happiness?",
+        "answers": [
+          "the Greatest Happiness Principle",
+          "Greatest Happiness Principle"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c011"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "utilitarianism"
+        ],
+        "prompt": "What did Bentham call the process of weighing pleasures and pains to choose the best act?",
+        "answers": [
+          "hedonic calculus"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c012"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "singer"
+        ],
+        "text": "Peter Singer defends {{preference_utilitarianism}}, which asks whether acts best satisfy the preferences of everyone affected.",
+        "acceptable": {
+          "preference_utilitarianism": [
+            "preference utilitarianism"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c013"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "singer",
+          "animals"
+        ],
+        "text": "Giving humans automatic priority over animals' like interests is {{speciesism}}.",
+        "acceptable": {
+          "speciesism": [
+            "speciesism"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c014"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "kant"
+        ],
+        "prompt": "What is Kant's main test for whether an action is morally permissible?",
+        "answers": [
+          "Categorical Imperative",
+          "the Categorical Imperative"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c015"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "kant"
+        ],
+        "text": "Kant says we must treat humanity always as an {{end}} and never merely as a {{means}}.",
+        "acceptable": {
+          "end": [
+            "end"
+          ],
+          "means": [
+            "means"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c016"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "virtue-ethics"
+        ],
+        "prompt": "What Greek term names the practical wisdom central to virtue ethics?",
+        "answers": [
+          "phronesis"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c017"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "virtue-ethics"
+        ],
+        "prompt": "What Greek term names flourishing or living well in Aristotle's ethics?",
+        "answers": [
+          "eudaimonia"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c018"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "confucian"
+        ],
+        "prompt": "In Confucian ethics, what term names filial piety?",
+        "answers": [
+          "xiao"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c019"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "kant"
+        ],
+        "correct": "Kantian ethics",
+        "prompt": "Which ethical lens treats autonomy as central because persons must never be used merely as means?",
+        "distractors": [
+          "utilitarianism",
+          "care ethics",
+          "virtue ethics"
+        ],
+        "shuffle": true,
+        "id": "c020"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "paternalism"
+        ],
+        "prompt": "What is the name for caring for someone by deciding for them?",
+        "answers": [
+          "paternalism"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c021"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "eugenics"
+        ],
+        "prompt": "What ideology claimed society could be improved by controlling who was allowed to reproduce?",
+        "answers": [
+          "eugenics"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c022"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "buck-v-bell"
+        ],
+        "prompt": "Which Supreme Court case upheld Carrie Buck's forced sterilization?",
+        "answers": [
+          "Buck v. Bell",
+          "Buck versus Bell"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c023"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "buck-v-bell"
+        ],
+        "text": "Justice Holmes wrote, \"Three generations of {{imbeciles}} are enough.\"",
+        "acceptable": {
+          "imbeciles": [
+            "imbeciles"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c024"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "nuremberg"
+        ],
+        "prompt": "According to the Nuremberg Code, what is absolutely essential for human-subject research?",
+        "answers": [
+          "voluntary consent"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c025"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "helsinki"
+        ],
+        "prompt": "What 1964 document from the World Medical Association tried to make research ethics medicine's own responsibility?",
+        "answers": [
+          "Declaration of Helsinki",
+          "the Declaration of Helsinki"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c026"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "belmont"
+        ],
+        "text": "The Belmont Report named three principles: respect for persons, {{beneficence}}, and {{justice}}.",
+        "acceptable": {
+          "beneficence": [
+            "beneficence"
+          ],
+          "justice": [
+            "justice"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c027"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "willowbrook"
+        ],
+        "correct": "Willowbrook",
+        "prompt": "Which case is most closely associated with deliberately infecting institutionalized children with hepatitis?",
+        "distractors": [
+          "Tuskegee",
+          "Buck v. Bell",
+          "Nuremberg"
+        ],
+        "shuffle": true,
+        "id": "c028"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "irb"
+        ],
+        "prompt": "What U.S. law created the system of institutional review boards after Tuskegee?",
+        "answers": [
+          "National Research Act",
+          "the National Research Act"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c029"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "tuskegee"
+        ],
+        "text": "In Tuskegee, subjects were told they had {{bad_blood}} rather than syphilis.",
+        "acceptable": {
+          "bad_blood": [
+            "bad blood"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c030"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "clinical-relationship",
+          "models"
+        ],
+        "prompt": "Which Emanuel and Emanuel model has the clinician choose what is best for the patient?",
+        "answers": [
+          "paternalistic model",
+          "paternalistic"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c031"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "clinical-relationship",
+          "models"
+        ],
+        "prompt": "Which Emanuel and Emanuel model has the clinician provide facts and options but not value guidance?",
+        "answers": [
+          "informative model",
+          "informative"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c032"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "clinical-relationship",
+          "models"
+        ],
+        "prompt": "Which Emanuel and Emanuel model has the clinician help clarify the patient's values?",
+        "answers": [
+          "interpretive model",
+          "interpretive"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c033"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "clinical-relationship",
+          "models"
+        ],
+        "prompt": "Which Emanuel and Emanuel model has the clinician recommend and reason about values with the patient?",
+        "answers": [
+          "deliberative model",
+          "deliberative"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c034"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-02b",
+          "consent"
+        ],
+        "text": "Informed consent is a {{process}}, not a {{signature}}.",
+        "acceptable": {
+          "process": [
+            "process"
+          ],
+          "signature": [
+            "signature"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c035"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "consent",
+          "disclosure"
+        ],
+        "prompt": "What disclosure standard asks what a reasonable patient would consider material to the decision?",
+        "answers": [
+          "reasonable patient standard",
+          "reasonable patient",
+          "Canterbury standard"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c036"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-02b",
+          "consent",
+          "understanding"
+        ],
+        "text": "{{Teach-back}} checks understanding by asking the patient to restate the plan in their own words.",
+        "acceptable": {
+          "Teach-back": [
+            "teach-back"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c037"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-02b",
+          "confidentiality",
+          "hipaa"
+        ],
+        "text": "HIPAA often limits disclosures to the {{minimum_necessary}} information for the task.",
+        "acceptable": {
+          "minimum_necessary": [
+            "minimum necessary"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c038"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "capacity"
+        ],
+        "prompt": "What term names a patient's decision-making ability when it is assessed for a specific choice at a specific time?",
+        "answers": [
+          "capacity"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c039"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-02b",
+          "consent"
+        ],
+        "correct": "voluntariness",
+        "prompt": "Which element of valid consent is at issue when a patient is pressured by staff or family?",
+        "distractors": [
+          "disclosure",
+          "understanding",
+          "capacity"
+        ],
+        "shuffle": true,
+        "id": "c040"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "basics"
+        ],
+        "prompt": "What is the main goal of clinical research?",
+        "answers": [
+          "to produce knowledge",
+          "produce knowledge",
+          "producing knowledge"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c041"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "basics"
+        ],
+        "prompt": "What is the main goal of clinical care?",
+        "answers": [
+          "to help the patient in front of you",
+          "help the patient in front of you"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c042"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "trial-design"
+        ],
+        "prompt": "What process assigns participants to study arms by chance to keep comparisons fair?",
+        "answers": [
+          "randomization",
+          "randomisation"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c043"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "equipoise"
+        ],
+        "text": "Clinical {{equipoise}} means the expert community is genuinely unsure which arm is better.",
+        "acceptable": {
+          "equipoise": [
+            "equipoise"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c044"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "polio"
+        ],
+        "prompt": "What nickname was given to the children who took part in the 1954 polio vaccine trial?",
+        "answers": [
+          "Polio Pioneers",
+          "the Polio Pioneers"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c045"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "blinding"
+        ],
+        "correct": "double-blinding",
+        "prompt": "Which design feature most directly prevented doctors' hopes from tipping borderline diagnoses in the placebo-controlled half of the 1954 polio trial?",
+        "distractors": [
+          "volunteer recruitment",
+          "longer follow-up",
+          "higher dosing"
+        ],
+        "shuffle": true,
+        "id": "c046"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "endpoints"
+        ],
+        "prompt": "What kind of endpoint measures something patients directly care about, like avoiding a stroke or living longer?",
+        "answers": [
+          "clinical endpoint"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c047"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "endpoints"
+        ],
+        "text": "A lab number used as a stand-in for patient benefit is a {{surrogate_endpoint}}.",
+        "acceptable": {
+          "surrogate_endpoint": [
+            "surrogate endpoint"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c048"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "oversight"
+        ],
+        "prompt": "What independent board can stop a trial early for harm, benefit, or futility?",
+        "answers": [
+          "data safety monitoring board",
+          "DSMB",
+          "Data Safety Monitoring Board"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c049"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "consent"
+        ],
+        "text": "The mistake of confusing enrollment in a study with personalized care is the therapeutic {{misconception}}.",
+        "acceptable": {
+          "misconception": [
+            "misconception"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c050"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "vulnerability"
+        ],
+        "prompt": "What type of vulnerability applies when someone cannot fully understand or weigh the choice to enroll?",
+        "answers": [
+          "cognitive vulnerability",
+          "cognitive"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c051"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "vulnerability"
+        ],
+        "prompt": "What type of vulnerability applies when a subject is under the authority of someone who wants enrollment?",
+        "answers": [
+          "juridic vulnerability",
+          "juridic"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c052"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "vulnerability"
+        ],
+        "prompt": "What type of vulnerability applies when poverty or lack of care makes a trial hard to refuse?",
+        "answers": [
+          "allocational vulnerability",
+          "allocational"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c053"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "belmont"
+        ],
+        "text": "The Belmont Report names respect for persons, {{beneficence}}, and {{justice}}.",
+        "acceptable": {
+          "beneficence": [
+            "beneficence"
+          ],
+          "justice": [
+            "justice"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c054"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "justice"
+        ],
+        "prompt": "What phrase names choosing subjects fairly rather than simply for convenience?",
+        "answers": [
+          "fair subject selection"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c055"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "helsinki"
+        ],
+        "prompt": "According to Helsinki, new treatments should usually be tested against what comparator?",
+        "answers": [
+          "the best proven intervention",
+          "best proven intervention"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c056"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "common-rule"
+        ],
+        "text": "The 2018 Common Rule introduced {{broad_consent}} for some future secondary uses of data or biospecimens.",
+        "acceptable": {
+          "broad_consent": [
+            "broad consent"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c057"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "misconduct"
+        ],
+        "prompt": "What is the name for running many analyses until something reaches statistical significance?",
+        "answers": [
+          "p-hacking",
+          "p hacking"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c058"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "misconduct"
+        ],
+        "text": "Writing the hypothesis after seeing the results is {{HARKing}}.",
+        "acceptable": {
+          "HARKing": [
+            "HARKing"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c059"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "vulnerability"
+        ],
+        "correct": "deferential vulnerability",
+        "prompt": "Which type of vulnerability is most clearly in play when a patient feels unable to refuse their own physician's request to enroll?",
+        "distractors": [
+          "cognitive vulnerability",
+          "juridic vulnerability",
+          "allocational vulnerability"
+        ],
+        "shuffle": true,
+        "id": "c060"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "argument-analysis"
+        ],
+        "prompt": "What is the name for the numbered-premises-plus-conclusion format used to make an argument explicit?",
+        "answers": [
+          "standard form"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c061"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "argument-analysis"
+        ],
+        "prompt": "What do we call an argument whose conclusion follows from its premises if those premises were true?",
+        "answers": [
+          "valid"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c062"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "argument-analysis"
+        ],
+        "prompt": "What do we call an argument that is valid and also has true premises?",
+        "answers": [
+          "sound"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c063"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "fallacies"
+        ],
+        "text": "Sliding between the biological and moral senses of the word \"human\" is {{equivocation}}.",
+        "acceptable": {
+          "equivocation": [
+            "equivocation"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c064"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "fallacies"
+        ],
+        "text": "An argument commits {{begging_the_question}} when one premise already assumes the conclusion it is supposed to prove.",
+        "acceptable": {
+          "begging_the_question": [
+            "begging the question"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c065"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "biology"
+        ],
+        "prompt": "What term names the point at which a fetus could plausibly survive outside the womb with intensive medical support?",
+        "answers": [
+          "viability"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c066"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "marquis"
+        ],
+        "prompt": "What is the name of Don Marquis's argument that abortion is wrong because it deprives the fetus of a valuable future?",
+        "answers": [
+          "future-like-ours argument",
+          "future like ours argument"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c067"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "warren"
+        ],
+        "prompt": "Which philosopher argues from five marks of personhood?",
+        "answers": [
+          "Mary Anne Warren",
+          "Warren"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c068"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "thomson"
+        ],
+        "text": "Judith Jarvis Thomson argues that a right to life is not automatically a right to use someone else's {{body}}.",
+        "acceptable": {
+          "body": [
+            "body"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c069"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "hursthouse"
+        ],
+        "correct": "Rosalind Hursthouse",
+        "prompt": "Which thinker reframes abortion around character, relationships, and what is salient in a human life rather than fetal personhood?",
+        "distractors": [
+          "Don Marquis",
+          "Mary Anne Warren",
+          "Judith Jarvis Thomson"
+        ],
+        "shuffle": true,
+        "id": "c070"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "history"
+        ],
+        "prompt": "What common-law line treated abortion as a crime only after the pregnant woman first felt fetal movement?",
+        "answers": [
+          "quickening"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c071"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "history"
+        ],
+        "text": "Roman law treated the fetus as part of the mother: {{pars_viscerum_matris}}.",
+        "acceptable": {
+          "pars_viscerum_matris": [
+            "pars viscerum matris"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c072"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "history"
+        ],
+        "prompt": "Which AMA physician led the 19th-century campaign to criminalize abortion from conception?",
+        "answers": [
+          "Horatio Storer",
+          "Storer"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c073"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "legal-method"
+        ],
+        "prompt": "What principle tells courts to stand by things decided unless there is a strong reason to overrule precedent?",
+        "answers": [
+          "stare decisis"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c074"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "roe"
+        ],
+        "text": "Roe v. Wade created the {{trimester_framework}} for abortion regulation.",
+        "acceptable": {
+          "trimester_framework": [
+            "trimester framework"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c075"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "casey"
+        ],
+        "prompt": "What standard from Planned Parenthood v. Casey asks whether a law places a substantial obstacle in the path of abortion access?",
+        "answers": [
+          "undue burden",
+          "undue burden standard"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c076"
+      },
+      {
+        "mode": "cloze",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "dobbs"
+        ],
+        "text": "Dobbs said unenumerated rights must be deeply rooted in the Nation's {{history}} and {{tradition}}.",
+        "acceptable": {
+          "history": [
+            "history"
+          ],
+          "tradition": [
+            "tradition"
+          ]
+        },
+        "fuzzy": {
+          "max_edit_distance": 1,
+          "case_sensitive": false
+        },
+        "id": "c077"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "dobbs"
+        ],
+        "prompt": "What are the laws called that automatically took effect when Roe was overturned?",
+        "answers": [
+          "trigger laws",
+          "trigger law"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c078"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "interstate"
+        ],
+        "prompt": "What are the laws called that protect providers or patients involved in cross-state abortion care from outside-state enforcement?",
+        "answers": [
+          "shield laws",
+          "shield law"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c079"
+      },
+      {
+        "mode": "mc",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "dobbs"
+        ],
+        "correct": "Dobbs v. Jackson Women's Health Organization",
+        "prompt": "Which case returned abortion regulation to the states by overturning Roe and Casey?",
+        "distractors": [
+          "Roe v. Wade",
+          "Planned Parenthood v. Casey",
+          "Schloendorff v. Society of New York Hospital"
+        ],
+        "shuffle": true,
+        "id": "c080"
+      }
+    ]
+  }
+}
