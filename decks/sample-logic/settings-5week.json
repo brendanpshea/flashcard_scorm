@@ -1,15 +1,13 @@
 {
   "course": "PHIL101-SUMMER",
   "schedule": {
-    "duration_weeks": 5,
-    "target_active_days_per_week": 4,
     "daily_new_card_limit": 25,
     "daily_review_limit": 150
   },
   "scoring": {
     "pass_threshold": 0.7,
     "engagement_floor": 0.6,
-    "mastery_requires": { "correct_count": 3, "min_interval_days": 5 }
+    "mastery_requires": { "correct_count": 3 }
   },
   "engagement": {
     "weights": { "consistency": 0.5, "volume": 0.3, "on_schedule": 0.2 },

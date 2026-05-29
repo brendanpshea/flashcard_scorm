@@ -47,9 +47,14 @@ export function isDue(state, now = today()) {
   return state.due <= now;
 }
 
+// Mastery is calendar-agnostic: it relies on the natural spacing SM-2
+// already enforces (correct_count >= 3 implies the card has been due, and
+// answered correctly, on at least 3 separate days). `repetitions >= 1`
+// excludes currently-lapsed cards — a card that just dropped back to a
+// 1-day interval isn't mastered, even if it has many lifetime corrects.
 export function isMastered(state, requires) {
   return state.correct_count >= requires.correct_count
-      && state.interval_days >= requires.min_interval_days;
+      && state.repetitions >= 1;
 }
 
 export function buildStudyAhead(allCards, stateMap) {

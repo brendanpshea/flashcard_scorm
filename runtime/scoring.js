@@ -1,6 +1,19 @@
 // Score = mastery * (floor + (1-floor) * engagement) * completion_factor
 import { isMastered } from "./sm2.js";
 
+// Target active days: explicit setting wins; otherwise derived from deck size
+// and the daily new-card limit. The formula = days-to-introduce + review-tail,
+// where the review tail is roughly the time for the last-introduced card to
+// reach mastery interval (~7 days at default SM-2 ease).
+export function resolveTargetActiveDays(totalCards, settings) {
+  const explicit = settings.schedule.target_active_days;
+  if (explicit) return explicit;
+  const newLimit = settings.schedule.daily_new_card_limit;
+  const introDays = Math.ceil(totalCards / newLimit);
+  const reviewTail = 7;
+  return introDays + reviewTail;
+}
+
 export function computeScore(cards, stateMap, activityLog, settings) {
   const req = settings.scoring.mastery_requires;
   const total = cards.length;
@@ -13,11 +26,13 @@ export function computeScore(cards, stateMap, activityLog, settings) {
     if (st.attempts >= 2 && st.correct_count >= 1) attemptedSeriously += 1;
     if (isMastered(st, req)) mastered += 1;
 
-    // Continuous per-card progress toward mastery: average of the two
-    // requirements, each capped at 1. Gives day-1 students visible movement.
+    // Continuous per-card progress toward mastery: average of "how many
+    // corrects accumulated" and "is the card currently confirmed (not
+    // lapsed)". Gives day-1 students visible movement, drops sharply on a
+    // lapse so the bar reflects the real recovery work.
     const correctProgress = Math.min(1, st.correct_count / req.correct_count);
-    const intervalProgress = Math.min(1, st.interval_days / req.min_interval_days);
-    masteryProgressSum += (correctProgress + intervalProgress) / 2;
+    const confirmProgress = st.repetitions >= 1 ? 1 : 0;
+    masteryProgressSum += (correctProgress + confirmProgress) / 2;
   }
   const mastery = total ? mastered / total : 0;
   const masteryProgress = total ? masteryProgressSum / total : 0;
@@ -44,8 +59,7 @@ export function computeScore(cards, stateMap, activityLog, settings) {
 
 function computeEngagement(log, totalCards, settings) {
   const w = settings.engagement.weights;
-  const sched = settings.schedule;
-  const targetActiveDays = sched.duration_weeks * sched.target_active_days_per_week;
+  const targetActiveDays = resolveTargetActiveDays(totalCards, settings);
   const targetReviews = totalCards * settings.engagement.desired_passes_per_card;
 
   const activeDays = (log.active_days || []).length;

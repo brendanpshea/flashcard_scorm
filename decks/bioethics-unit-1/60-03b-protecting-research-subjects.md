@@ -22,9 +22,8 @@ A: allocational
 ---
 mode: cloze
 tags: lecture-03b, research-ethics, belmont
-Q: The Belmont Report names respect for persons, {{beneficence}}, and {{justice}}.
+Q: Belmont's requirement to minimize harm and justify risk reflects {{beneficence}}.
 beneficence: beneficence
-justice: justice
 
 ---
 mode: typed
@@ -42,8 +41,8 @@ A: best proven intervention
 ---
 mode: cloze
 tags: lecture-03b, research-ethics, common-rule
-Q: The 2018 Common Rule introduced {{broad_consent}} for some future secondary uses of data or biospecimens.
-broad_consent: broad consent
+Q: A one-time agreement to future unspecified research uses of stored samples or data is {{broad consent}}.
+broad consent: broad consent
 
 ---
 mode: typed
@@ -55,7 +54,7 @@ A: p hacking
 ---
 mode: cloze
 tags: lecture-03b, research-ethics, misconduct
-Q: Writing the hypothesis after seeing the results is {{HARKing}}.
+Q: Presenting a hypothesis as if it came first, even though it was written after seeing the results, is {{HARKing}}.
 HARKing: HARKing
 
 ---
@@ -66,3 +65,23 @@ Q: Which type of vulnerability is most clearly in play when a patient feels unab
 -: cognitive vulnerability
 -: juridic vulnerability
 -: allocational vulnerability
+
+---
+mode: typed
+tags: lecture-03b, research-ethics, vulnerability
+Q: What type of vulnerability arises when serious illness or lack of alternatives makes a study especially hard to refuse?
+A: medical vulnerability
+A: medical
+
+---
+mode: typed
+tags: lecture-03b, research-ethics, vulnerability
+Q: What type of vulnerability arises when the local setting cannot reliably deliver the follow-up or post-trial care it promises?
+A: infrastructural vulnerability
+A: infrastructural
+
+---
+mode: typed
+tags: lecture-03b, research-ethics, belmont
+Q: Which Belmont principle is most directly implemented through real consent and extra protection for vulnerable participants?
+A: respect for persons

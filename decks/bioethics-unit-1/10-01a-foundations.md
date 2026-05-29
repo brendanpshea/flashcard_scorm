@@ -1,7 +1,7 @@
 ---
 mode: typed
 tags: lecture-01a, foundations, bioethics
-Q: What field is the systematic study of ethical questions in patient care, research, public health, and biotechnology?
+Q: What field systematically studies ethical questions arising in patient care, biomedical research, public health, and biotechnology?
 A: bioethics
 
 ---
@@ -20,8 +20,9 @@ A: meta-ethics
 ---
 mode: cloze
 tags: lecture-01a, foundations, normative-ethics
-Q: Bioethics is a form of {{applied_normative_ethics}}.
-applied_normative_ethics: applied normative ethics
+Q: Most bioethics is {{applied}} rather than purely theoretical and {{normative}} rather than purely descriptive.
+applied: applied
+normative: normative
 
 ---
 mode: mc
@@ -35,13 +36,13 @@ Q: Which type of claim answers the question "What may or must we do under law?"
 ---
 mode: cloze
 tags: lecture-01a, principles, autonomy
-Q: In the lecture's "fourth-grade morality" table, "Ask first; don't push people around" becomes {{autonomy}} in the clinic.
+Q: The common-morality idea that we should ask first instead of pushing people around becomes {{autonomy}} in clinical ethics.
 autonomy: autonomy
 
 ---
 mode: cloze
 tags: lecture-01a, principles, beneficence
-Q: In the lecture's "fourth-grade morality" table, "Help people who are hurt" becomes {{beneficence}} in the clinic.
+Q: The common-morality idea that we should help people who are hurt becomes {{beneficence}} in clinical ethics.
 beneficence: beneficence
 
 ---
@@ -54,11 +55,36 @@ A: nonmaleficence
 ---
 mode: typed
 tags: lecture-01a, principles, justice
-Q: Which principle is captured by the child's rule "Share fairly; no favorites"?
+Q: Which principle is most directly concerned with fair distribution of benefits and burdens in health care?
 A: justice
 
 ---
 mode: typed
 tags: lecture-01a, reasoning, common-morality
-Q: What term means making a rough concept we already use more precise and usable without replacing it?
+Q: What term means making a familiar moral idea more precise without replacing it?
 A: explication
+
+---
+mode: typed
+tags: lecture-01a, principles, principlism
+Q: What name is given to the Beauchamp and Childress approach built around autonomy, beneficence, non-maleficence, and justice?
+A: principlism
+
+---
+mode: typed
+tags: lecture-01a, principles, prima-facie
+Q: What do we call a duty that normally binds unless it is overridden by a stronger moral consideration in a particular case?
+A: prima facie duty
+A: prima facie
+
+---
+mode: typed
+tags: lecture-01a, principles, specification
+Q: What term names narrowing a broad principle so it can guide a concrete case?
+A: specification
+
+---
+mode: typed
+tags: lecture-01a, principles, balancing
+Q: What term names weighing competing prima facie duties in a concrete case?
+A: balancing

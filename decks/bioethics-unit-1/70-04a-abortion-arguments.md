@@ -19,14 +19,14 @@ A: sound
 ---
 mode: cloze
 tags: lecture-04a, abortion, fallacies
-Q: Sliding between the biological and moral senses of the word "human" is {{equivocation}}.
+Q: Using the word "human" first in a biological sense and then in a moral sense within the same argument is {{equivocation}}.
 equivocation: equivocation
 
 ---
 mode: cloze
 tags: lecture-04a, abortion, fallacies
-Q: An argument commits {{begging_the_question}} when one premise already assumes the conclusion it is supposed to prove.
-begging_the_question: begging the question
+Q: If an argument assumes abortion is murder in a premise and then concludes abortion is wrong, it is {{begging the question}}.
+begging the question: begging the question
 
 ---
 mode: typed
@@ -51,7 +51,7 @@ A: Warren
 ---
 mode: cloze
 tags: lecture-04a, abortion, thomson
-Q: Judith Jarvis Thomson argues that a right to life is not automatically a right to use someone else's {{body}}.
+Q: In Thomson's violinist argument, a right to life does not automatically include a right to another person's {{body}}.
 body: body
 
 ---
@@ -62,3 +62,28 @@ Q: Which thinker reframes abortion around character, relationships, and what is 
 -: Don Marquis
 -: Mary Anne Warren
 -: Judith Jarvis Thomson
+
+---
+mode: typed
+tags: lecture-04a, abortion, biology
+Q: What developmental term names the single cell formed at fertilization?
+A: zygote
+
+---
+mode: typed
+tags: lecture-04a, abortion, biology
+Q: What developmental term names the developing human from implantation through the eighth week?
+A: embryo
+
+---
+mode: typed
+tags: lecture-04a, abortion, biology
+Q: What developmental term names the developing human from the ninth week of gestation until birth?
+A: fetus
+A: foetus
+
+---
+mode: typed
+tags: lecture-04a, abortion, thomson
+Q: What objection says Thomson's violinist argument may fit rape better than pregnancy from consensual sex because sex can create responsibility for a dependent being?
+A: responsibility objection

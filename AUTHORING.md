@@ -139,7 +139,7 @@ The student types into one or more blanks within a sentence. Each `{{key}}` plac
 ### Use cloze when
 
 - The card teaches a sentence-level fact and a specific word or phrase carries the meaning.
-- The blanked word is short (1–3 words) and has a small number of acceptable phrasings.
+- The blanked word is short (ideally 1–2 words, at most 3) and has a small number of acceptable phrasings.
 - The surrounding sentence provides context that disambiguates the answer.
 
 ### Format
@@ -154,6 +154,8 @@ UDP: UDP
 ```
 
 Each `{{key}}` in the `Q:` must have a corresponding `key: value` line below specifying the accepted answer for that blank. Multiple blanks are fine but keep it to ≤3 per card. The build will fail if a placeholder has no matching answer.
+
+Keys may be short natural phrases such as `data link`; they do not need underscores or hyphens.
 
 ### Rules
 

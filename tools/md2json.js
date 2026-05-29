@@ -152,13 +152,16 @@ function parseCard(text) {
     if ((m = line.match(/^A:\s*(.*)$/))) { answers.push(m[1]); continue; }
     if ((m = line.match(/^\*:\s*(.*)$/))) { card.correct = m[1]; continue; }
     if ((m = line.match(/^-:\s*(.*)$/))) { distractors.push(m[1]); continue; }
-    if ((m = line.match(/^([a-zA-Z_][\w-]*):\s*(.+)$/))) {
+    if ((m = line.match(/^(id|mode|hint|tags):\s*(.+)$/))) {
       const k = m[1], v = m[2].trim();
       if (k === "id") card.id = v;
       else if (k === "mode") card.mode = v;
       else if (k === "hint") card.hint = v;
       else if (k === "tags") card.tags = v.split(",").map(s => s.trim()).filter(Boolean);
-      else cloze[k] = v;
+      continue;
+    }
+    if (card.mode === "cloze" && (m = line.match(/^([^:]+):\s*(.+)$/))) {
+      cloze[m[1].trim()] = m[2].trim();
       continue;
     }
     promptLines.push(line);
@@ -180,8 +183,9 @@ function parseCard(text) {
     card.acceptable = {};
     const keys = [...prompt.matchAll(/\{\{([^}]+)\}\}/g)].map(x => x[1]);
     for (const k of keys) {
-      const v = cloze[k];
-      if (!v) throw new Error(`cloze missing answer for key '${k}'`);
+      if (!cloze[k]) throw new Error(`cloze missing answer for key '${k}'`);
+    }
+    for (const [k, v] of Object.entries(cloze)) {
       card.acceptable[k] = [v];
     }
     card.fuzzy = { max_edit_distance: 1, case_sensitive: false };

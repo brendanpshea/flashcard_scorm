@@ -2,6 +2,7 @@ import { newCardState, updateSM2, buildSession, buildStudyAhead, isMastered, tod
 import { gradeAnswer } from "./grader.js";
 import { computeScore } from "./scoring.js";
 import { encodeState, decodeState, byteSize, SIZE_WARN_BYTES_2004 } from "./persistence.js";
+import { mergeSettings } from "./defaults.js";
 
 const $ = (sel) => document.querySelector(sel);
 const todayKey = () => today();   // integer day number
@@ -22,12 +23,18 @@ let lastFocusBeforeModal = null;
 
 async function main() {
   SCORM.init();
-  [deck, settings] = await Promise.all([
-    fetch("./cards.json").then(r => r.json()).then(j => j.deck),
-    fetch("./class_settings.json").then(r => r.json())
+  const [deckJson, overrides] = await Promise.all([
+    fetch("./cards.json").then(r => r.json()),
+    fetch("./class_settings.json").then(r => r.ok ? r.json() : {}).catch(() => ({}))
   ]);
+  deck = deckJson.deck;
+  settings = mergeSettings(overrides);
   $("#deck-title").textContent = deck.title;
-  $("#course-tag").textContent = settings.course;
+  if (settings.course) {
+    $("#course-tag").textContent = settings.course;
+  } else {
+    $("#course-tag").hidden = true;
+  }
 
   hydrate();
   wireIntro();

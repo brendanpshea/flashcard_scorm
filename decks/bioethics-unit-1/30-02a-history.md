@@ -39,9 +39,8 @@ A: the Declaration of Helsinki
 ---
 mode: cloze
 tags: lecture-02a, history, belmont
-Q: The Belmont Report named three principles: respect for persons, {{beneficence}}, and {{justice}}.
+Q: In Belmont, the principle that requires researchers to minimize harm and justify risks to subjects is {{beneficence}}.
 beneficence: beneficence
-justice: justice
 
 ---
 mode: mc
@@ -62,5 +61,24 @@ A: the National Research Act
 ---
 mode: cloze
 tags: lecture-02a, history, tuskegee
-Q: In Tuskegee, subjects were told they had {{bad_blood}} rather than syphilis.
-bad_blood: bad blood
+Q: In Tuskegee, subjects were told they had {{bad blood}} rather than syphilis.
+bad blood: bad blood
+
+---
+mode: typed
+tags: lecture-02a, history, beecher
+Q: Who published the 1966 exposé of 22 unethical human studies in respected medical journals?
+A: Henry Beecher
+A: Beecher
+
+---
+mode: typed
+tags: lecture-02a, history, belmont
+Q: Which Belmont principle grounds meaningful consent and extra protection for vulnerable participants?
+A: respect for persons
+
+---
+mode: typed
+tags: lecture-02a, history, belmont
+Q: Which Belmont principle asks who bears research burdens and who receives benefits?
+A: justice

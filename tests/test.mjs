@@ -1,7 +1,8 @@
 // Run with: node tests/test.mjs
 import { newCardState, updateSM2, isMastered, isDue, buildSession, today } from "../runtime/sm2.js";
 import { gradeAnswer } from "../runtime/grader.js";
-import { computeScore } from "../runtime/scoring.js";
+import { computeScore, resolveTargetActiveDays } from "../runtime/scoring.js";
+import { DEFAULT_SETTINGS, mergeSettings } from "../runtime/defaults.js";
 import { encodeState, decodeState, byteSize, SCHEMA_VERSION } from "../runtime/persistence.js";
 import assert from "node:assert/strict";
 
@@ -15,10 +16,9 @@ const sm2 = { starting_ease: 2.5, min_ease: 1.3, lapse_interval_days: 1 };
 
 const SETTINGS = {
   course: "TEST",
-  schedule: { duration_weeks: 5, target_active_days_per_week: 4,
-              daily_new_card_limit: 25, daily_review_limit: 150 },
+  schedule: { daily_new_card_limit: 25, daily_review_limit: 150 },
   scoring: { pass_threshold: 0.7, engagement_floor: 0.6,
-             mastery_requires: { correct_count: 3, min_interval_days: 5 } },
+             mastery_requires: { correct_count: 3 } },
   engagement: { weights: { consistency: 0.5, volume: 0.3, on_schedule: 0.2 },
                 min_session_minutes_for_active_day: 5,
                 min_latency_ms_for_productive_review: 800,
@@ -61,11 +61,17 @@ test("ease has a floor of 1.3", () => {
   assert.ok(s.ease >= 1.3);
 });
 
-test("isMastered requires both correct_count and interval", () => {
+test("isMastered after 3 corrects; lapse drops mastery", () => {
   const s = newCardState("c1");
   updateSM2(s, 5, sm2); updateSM2(s, 5, sm2); updateSM2(s, 5, sm2);
-  assert.ok(isMastered(s, { correct_count: 3, min_interval_days: 5 }));
-  assert.ok(!isMastered(s, { correct_count: 5, min_interval_days: 5 }));
+  assert.ok(isMastered(s, { correct_count: 3 }));
+  assert.ok(!isMastered(s, { correct_count: 5 }));
+  // Lapse: correct_count stays high, but repetitions resets → not mastered.
+  updateSM2(s, 1, sm2);
+  assert.ok(!isMastered(s, { correct_count: 3 }));
+  // Recover with one correct → mastered again.
+  updateSM2(s, 5, sm2);
+  assert.ok(isMastered(s, { correct_count: 3 }));
 });
 
 /* ---- Grader ---- */
@@ -145,6 +151,32 @@ test("partial mastery still scales by engagement floor", () => {
 });
 
 /* ---- Session building ---- */
+
+test("mergeSettings: empty override returns defaults", () => {
+  const merged = mergeSettings({});
+  assert.equal(merged.scoring.pass_threshold, 0.7);
+  assert.equal(merged.schedule.daily_new_card_limit, 20);
+  assert.deepEqual(merged.engagement.weights, DEFAULT_SETTINGS.engagement.weights);
+});
+
+test("mergeSettings: override deep-merges without losing siblings", () => {
+  const merged = mergeSettings({ schedule: { daily_new_card_limit: 35 } });
+  assert.equal(merged.schedule.daily_new_card_limit, 35);
+  assert.equal(merged.schedule.daily_review_limit, 100);  // default preserved
+  assert.equal(merged.scoring.pass_threshold, 0.7);
+});
+
+test("target_active_days: derived from deck size when not set", () => {
+  // 60 cards / 25 per day = 3 intro days, + 7 review tail = 10
+  assert.equal(resolveTargetActiveDays(60, SETTINGS), 10);
+  // 500 cards / 25 = 20 intro days, + 7 = 27
+  assert.equal(resolveTargetActiveDays(500, SETTINGS), 27);
+});
+
+test("target_active_days: explicit value overrides derivation", () => {
+  const s = { ...SETTINGS, schedule: { ...SETTINGS.schedule, target_active_days: 42 } };
+  assert.equal(resolveTargetActiveDays(500, s), 42);
+});
 
 test("buildSession respects daily caps", () => {
   const cards = Array.from({ length: 30 }, (_, i) => ({ id: `c${i}` }));

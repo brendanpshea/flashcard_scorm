@@ -17,8 +17,8 @@ const settingsPath = arg("--settings");
 const outPath = arg("--out", "dist/package.zip");
 const previewDir = arg("--preview");
 
-if (!deckPath || !settingsPath) {
-  console.error("Usage: node build.js --deck <cards.json> --settings <settings.json> --out <zip> [--preview <dir>]");
+if (!deckPath) {
+  console.error("Usage: node build.js --deck <cards.json> [--settings <settings.json>] --out <zip> [--preview <dir>]");
   process.exit(1);
 }
 
@@ -55,7 +55,8 @@ function collectFiles() {
     out.push({ name, data: fs.readFileSync(path.join(runtimeDir, name)) });
   }
   out.push({ name: "cards.json", data: fs.readFileSync(deckPath) });
-  out.push({ name: "class_settings.json", data: fs.readFileSync(settingsPath) });
+  const settingsData = settingsPath ? fs.readFileSync(settingsPath) : Buffer.from("{}", "utf8");
+  out.push({ name: "class_settings.json", data: settingsData });
   out.push({ name: "imsmanifest.xml", data: Buffer.from(manifest, "utf8") });
   return out;
 }

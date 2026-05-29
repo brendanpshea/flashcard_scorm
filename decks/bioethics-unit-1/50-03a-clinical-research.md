@@ -2,16 +2,17 @@
 mode: typed
 tags: lecture-03a, research, basics
 Q: What is the main goal of clinical research?
-A: to produce knowledge
 A: produce knowledge
-A: producing knowledge
+A: generalizable knowledge
+A: knowledge
 
 ---
 mode: typed
 tags: lecture-03a, research, basics
 Q: What is the main goal of clinical care?
-A: to help the patient in front of you
-A: help the patient in front of you
+A: help this patient
+A: benefit this patient
+A: the patient in front of you
 
 ---
 mode: typed
@@ -23,7 +24,7 @@ A: randomisation
 ---
 mode: cloze
 tags: lecture-03a, research, equipoise
-Q: Clinical {{equipoise}} means the expert community is genuinely unsure which arm is better.
+Q: Clinical {{equipoise}} exists when the expert community is genuinely uncertain which arm is better.
 equipoise: equipoise
 
 ---
@@ -51,8 +52,8 @@ A: clinical endpoint
 ---
 mode: cloze
 tags: lecture-03a, research, endpoints
-Q: A lab number used as a stand-in for patient benefit is a {{surrogate_endpoint}}.
-surrogate_endpoint: surrogate endpoint
+Q: An outcome like LDL level or tumor size used as a stand-in for patient benefit is a {{surrogate endpoint}}.
+surrogate endpoint: surrogate endpoint
 
 ---
 mode: typed
@@ -65,5 +66,26 @@ A: Data Safety Monitoring Board
 ---
 mode: cloze
 tags: lecture-03a, research, consent
-Q: The mistake of confusing enrollment in a study with personalized care is the therapeutic {{misconception}}.
+Q: When subjects think a study is being chosen mainly for their personal medical benefit, they are showing the therapeutic {{misconception}}.
 misconception: misconception
+
+---
+mode: typed
+tags: lecture-03a, research, analysis
+Q: What analysis keeps participants in the groups they were randomized to, even if they drop out or stop following the protocol?
+A: intention-to-treat
+A: intention to treat
+
+---
+mode: typed
+tags: lecture-03a, research, phases
+Q: Which trial phase mainly asks whether a new intervention is safe and what dose people can tolerate?
+A: Phase I
+A: phase 1
+
+---
+mode: typed
+tags: lecture-03a, research, phases
+Q: Which trial phase usually compares a new treatment against the current standard in a large randomized study?
+A: Phase III
+A: phase 3

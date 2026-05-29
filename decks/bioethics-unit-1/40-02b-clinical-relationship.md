@@ -29,7 +29,7 @@ A: deliberative
 ---
 mode: cloze
 tags: lecture-02b, consent
-Q: Informed consent is a {{process}}, not a {{signature}}.
+Q: A consent form can document a decision, but informed consent is really a {{process}} rather than just a {{signature}}.
 process: process
 signature: signature
 
@@ -44,14 +44,14 @@ A: Canterbury standard
 ---
 mode: cloze
 tags: lecture-02b, consent, understanding
-Q: {{Teach-back}} checks understanding by asking the patient to restate the plan in their own words.
-Teach-back: teach-back
+Q: Asking the patient to explain the plan back in their own words is {{teach-back}}.
+teach-back: teach-back
 
 ---
 mode: cloze
 tags: lecture-02b, confidentiality, hipaa
-Q: HIPAA often limits disclosures to the {{minimum_necessary}} information for the task.
-minimum_necessary: minimum necessary
+Q: Under HIPAA, staff should usually disclose only the {{minimum necessary}} information needed for the task.
+minimum necessary: minimum necessary
 
 ---
 mode: typed
@@ -67,3 +67,22 @@ Q: Which element of valid consent is at issue when a patient is pressured by sta
 -: disclosure
 -: understanding
 -: capacity
+
+---
+mode: typed
+tags: lecture-02b, consent, law
+Q: Which case includes Cardozo's statement that every adult of sound mind has a right to decide what shall be done with their own body?
+A: Schloendorff v. Society of New York Hospital
+A: Schloendorff
+
+---
+mode: typed
+tags: lecture-02b, capacity
+Q: Which Appelbaum and Grisso capacity ability asks whether the patient grasps how the information applies to them personally?
+A: appreciation
+
+---
+mode: typed
+tags: lecture-02b, confidentiality, tarasoff
+Q: Beyond a duty to warn, what broader duty did Tarasoff II impose on clinicians facing a serious threat to an identifiable person?
+A: duty to protect

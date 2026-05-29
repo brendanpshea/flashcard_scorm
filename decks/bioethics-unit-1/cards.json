@@ -11,7 +11,7 @@
           "foundations",
           "bioethics"
         ],
-        "prompt": "What field is the systematic study of ethical questions in patient care, research, public health, and biotechnology?",
+        "prompt": "What field systematically studies ethical questions arising in patient care, biomedical research, public health, and biotechnology?",
         "answers": [
           "bioethics"
         ],
@@ -63,10 +63,13 @@
           "foundations",
           "normative-ethics"
         ],
-        "text": "Bioethics is a form of {{applied_normative_ethics}}.",
+        "text": "Most bioethics is {{applied}} rather than purely theoretical and {{normative}} rather than purely descriptive.",
         "acceptable": {
-          "applied_normative_ethics": [
-            "applied normative ethics"
+          "applied": [
+            "applied"
+          ],
+          "normative": [
+            "normative"
           ]
         },
         "fuzzy": {
@@ -99,7 +102,7 @@
           "principles",
           "autonomy"
         ],
-        "text": "In the lecture's \"fourth-grade morality\" table, \"Ask first; don't push people around\" becomes {{autonomy}} in the clinic.",
+        "text": "The common-morality idea that we should ask first instead of pushing people around becomes {{autonomy}} in clinical ethics.",
         "acceptable": {
           "autonomy": [
             "autonomy"
@@ -118,7 +121,7 @@
           "principles",
           "beneficence"
         ],
-        "text": "In the lecture's \"fourth-grade morality\" table, \"Help people who are hurt\" becomes {{beneficence}} in the clinic.",
+        "text": "The common-morality idea that we should help people who are hurt becomes {{beneficence}} in clinical ethics.",
         "acceptable": {
           "beneficence": [
             "beneficence"
@@ -155,7 +158,7 @@
           "principles",
           "justice"
         ],
-        "prompt": "Which principle is captured by the child's rule \"Share fairly; no favorites\"?",
+        "prompt": "Which principle is most directly concerned with fair distribution of benefits and burdens in health care?",
         "answers": [
           "justice"
         ],
@@ -172,7 +175,7 @@
           "reasoning",
           "common-morality"
         ],
-        "prompt": "What term means making a rough concept we already use more precise and usable without replacing it?",
+        "prompt": "What term means making a familiar moral idea more precise without replacing it?",
         "answers": [
           "explication"
         ],
@@ -181,6 +184,75 @@
           "case_sensitive": false
         },
         "id": "c010"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "principlism"
+        ],
+        "prompt": "What name is given to the Beauchamp and Childress approach built around autonomy, beneficence, non-maleficence, and justice?",
+        "answers": [
+          "principlism"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c011"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "prima-facie"
+        ],
+        "prompt": "What do we call a duty that normally binds unless it is overridden by a stronger moral consideration in a particular case?",
+        "answers": [
+          "prima facie duty",
+          "prima facie"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c012"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "specification"
+        ],
+        "prompt": "What term names narrowing a broad principle so it can guide a concrete case?",
+        "answers": [
+          "specification"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c013"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01a",
+          "principles",
+          "balancing"
+        ],
+        "prompt": "What term names weighing competing prima facie duties in a concrete case?",
+        "answers": [
+          "balancing"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c014"
       },
       {
         "mode": "typed",
@@ -198,7 +270,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c011"
+        "id": "c015"
       },
       {
         "mode": "typed",
@@ -215,7 +287,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c012"
+        "id": "c016"
       },
       {
         "mode": "cloze",
@@ -224,9 +296,9 @@
           "theories",
           "singer"
         ],
-        "text": "Peter Singer defends {{preference_utilitarianism}}, which asks whether acts best satisfy the preferences of everyone affected.",
+        "text": "Singer's version of utilitarianism judges acts by how well they satisfy the preferences of everyone affected; this is {{preference utilitarianism}}.",
         "acceptable": {
-          "preference_utilitarianism": [
+          "preference utilitarianism": [
             "preference utilitarianism"
           ]
         },
@@ -234,7 +306,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c013"
+        "id": "c017"
       },
       {
         "mode": "cloze",
@@ -244,7 +316,7 @@
           "singer",
           "animals"
         ],
-        "text": "Giving humans automatic priority over animals' like interests is {{speciesism}}.",
+        "text": "Treating human interests as automatically more important than animals' like interests is {{speciesism}}.",
         "acceptable": {
           "speciesism": [
             "speciesism"
@@ -254,7 +326,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c014"
+        "id": "c018"
       },
       {
         "mode": "typed",
@@ -272,7 +344,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c015"
+        "id": "c019"
       },
       {
         "mode": "cloze",
@@ -281,7 +353,7 @@
           "theories",
           "kant"
         ],
-        "text": "Kant says we must treat humanity always as an {{end}} and never merely as a {{means}}.",
+        "text": "In Kant's humanity formulation, persons must be treated as an {{end}} and never merely as a {{means}}.",
         "acceptable": {
           "end": [
             "end"
@@ -294,7 +366,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c016"
+        "id": "c020"
       },
       {
         "mode": "typed",
@@ -311,7 +383,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c017"
+        "id": "c021"
       },
       {
         "mode": "typed",
@@ -328,7 +400,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c018"
+        "id": "c022"
       },
       {
         "mode": "typed",
@@ -345,7 +417,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c019"
+        "id": "c023"
       },
       {
         "mode": "mc",
@@ -362,7 +434,60 @@
           "virtue ethics"
         ],
         "shuffle": true,
-        "id": "c020"
+        "id": "c024"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "singer"
+        ],
+        "prompt": "What principle says that like interests deserve equal weight no matter whose interests they are?",
+        "answers": [
+          "equal consideration of interests",
+          "the principle of equal consideration of interests"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c025"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "confucian"
+        ],
+        "prompt": "In Confucian ethics, what term names humane benevolence or humaneness?",
+        "answers": [
+          "ren"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c026"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-01b",
+          "theories",
+          "natural-law"
+        ],
+        "prompt": "What doctrine says an act with both good and bad effects may be permitted when the bad effect is foreseen but not intended as a means or an end?",
+        "answers": [
+          "Doctrine of Double Effect",
+          "double effect"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c027"
       },
       {
         "mode": "typed",
@@ -379,7 +504,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c021"
+        "id": "c028"
       },
       {
         "mode": "typed",
@@ -396,7 +521,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c022"
+        "id": "c029"
       },
       {
         "mode": "typed",
@@ -414,7 +539,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c023"
+        "id": "c030"
       },
       {
         "mode": "cloze",
@@ -433,7 +558,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c024"
+        "id": "c031"
       },
       {
         "mode": "typed",
@@ -450,7 +575,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c025"
+        "id": "c032"
       },
       {
         "mode": "typed",
@@ -468,7 +593,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c026"
+        "id": "c033"
       },
       {
         "mode": "cloze",
@@ -477,20 +602,17 @@
           "history",
           "belmont"
         ],
-        "text": "The Belmont Report named three principles: respect for persons, {{beneficence}}, and {{justice}}.",
+        "text": "In Belmont, the principle that requires researchers to minimize harm and justify risks to subjects is {{beneficence}}.",
         "acceptable": {
           "beneficence": [
             "beneficence"
-          ],
-          "justice": [
-            "justice"
           ]
         },
         "fuzzy": {
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c027"
+        "id": "c034"
       },
       {
         "mode": "mc",
@@ -507,7 +629,7 @@
           "Nuremberg"
         ],
         "shuffle": true,
-        "id": "c028"
+        "id": "c035"
       },
       {
         "mode": "typed",
@@ -525,7 +647,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c029"
+        "id": "c036"
       },
       {
         "mode": "cloze",
@@ -534,9 +656,9 @@
           "history",
           "tuskegee"
         ],
-        "text": "In Tuskegee, subjects were told they had {{bad_blood}} rather than syphilis.",
+        "text": "In Tuskegee, subjects were told they had {{bad blood}} rather than syphilis.",
         "acceptable": {
-          "bad_blood": [
+          "bad blood": [
             "bad blood"
           ]
         },
@@ -544,7 +666,59 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c030"
+        "id": "c037"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "beecher"
+        ],
+        "prompt": "Who published the 1966 exposé of 22 unethical human studies in respected medical journals?",
+        "answers": [
+          "Henry Beecher",
+          "Beecher"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c038"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "belmont"
+        ],
+        "prompt": "Which Belmont principle grounds meaningful consent and extra protection for vulnerable participants?",
+        "answers": [
+          "respect for persons"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c039"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02a",
+          "history",
+          "belmont"
+        ],
+        "prompt": "Which Belmont principle asks who bears research burdens and who receives benefits?",
+        "answers": [
+          "justice"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c040"
       },
       {
         "mode": "typed",
@@ -562,7 +736,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c031"
+        "id": "c041"
       },
       {
         "mode": "typed",
@@ -580,7 +754,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c032"
+        "id": "c042"
       },
       {
         "mode": "typed",
@@ -598,7 +772,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c033"
+        "id": "c043"
       },
       {
         "mode": "typed",
@@ -616,7 +790,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c034"
+        "id": "c044"
       },
       {
         "mode": "cloze",
@@ -624,7 +798,7 @@
           "lecture-02b",
           "consent"
         ],
-        "text": "Informed consent is a {{process}}, not a {{signature}}.",
+        "text": "A consent form can document a decision, but informed consent is really a {{process}} rather than just a {{signature}}.",
         "acceptable": {
           "process": [
             "process"
@@ -637,7 +811,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c035"
+        "id": "c045"
       },
       {
         "mode": "typed",
@@ -656,7 +830,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c036"
+        "id": "c046"
       },
       {
         "mode": "cloze",
@@ -665,9 +839,9 @@
           "consent",
           "understanding"
         ],
-        "text": "{{Teach-back}} checks understanding by asking the patient to restate the plan in their own words.",
+        "text": "Asking the patient to explain the plan back in their own words is {{teach-back}}.",
         "acceptable": {
-          "Teach-back": [
+          "teach-back": [
             "teach-back"
           ]
         },
@@ -675,7 +849,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c037"
+        "id": "c047"
       },
       {
         "mode": "cloze",
@@ -684,9 +858,9 @@
           "confidentiality",
           "hipaa"
         ],
-        "text": "HIPAA often limits disclosures to the {{minimum_necessary}} information for the task.",
+        "text": "Under HIPAA, staff should usually disclose only the {{minimum necessary}} information needed for the task.",
         "acceptable": {
-          "minimum_necessary": [
+          "minimum necessary": [
             "minimum necessary"
           ]
         },
@@ -694,7 +868,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c038"
+        "id": "c048"
       },
       {
         "mode": "typed",
@@ -710,7 +884,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c039"
+        "id": "c049"
       },
       {
         "mode": "mc",
@@ -726,7 +900,58 @@
           "capacity"
         ],
         "shuffle": true,
-        "id": "c040"
+        "id": "c050"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "consent",
+          "law"
+        ],
+        "prompt": "Which case includes Cardozo's statement that every adult of sound mind has a right to decide what shall be done with their own body?",
+        "answers": [
+          "Schloendorff v. Society of New York Hospital",
+          "Schloendorff"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c051"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "capacity"
+        ],
+        "prompt": "Which Appelbaum and Grisso capacity ability asks whether the patient grasps how the information applies to them personally?",
+        "answers": [
+          "appreciation"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c052"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-02b",
+          "confidentiality",
+          "tarasoff"
+        ],
+        "prompt": "Beyond a duty to warn, what broader duty did Tarasoff II impose on clinicians facing a serious threat to an identifiable person?",
+        "answers": [
+          "duty to protect"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c053"
       },
       {
         "mode": "typed",
@@ -737,15 +962,15 @@
         ],
         "prompt": "What is the main goal of clinical research?",
         "answers": [
-          "to produce knowledge",
           "produce knowledge",
-          "producing knowledge"
+          "generalizable knowledge",
+          "knowledge"
         ],
         "fuzzy": {
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c041"
+        "id": "c054"
       },
       {
         "mode": "typed",
@@ -756,14 +981,15 @@
         ],
         "prompt": "What is the main goal of clinical care?",
         "answers": [
-          "to help the patient in front of you",
-          "help the patient in front of you"
+          "help this patient",
+          "benefit this patient",
+          "the patient in front of you"
         ],
         "fuzzy": {
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c042"
+        "id": "c055"
       },
       {
         "mode": "typed",
@@ -781,7 +1007,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c043"
+        "id": "c056"
       },
       {
         "mode": "cloze",
@@ -790,7 +1016,7 @@
           "research",
           "equipoise"
         ],
-        "text": "Clinical {{equipoise}} means the expert community is genuinely unsure which arm is better.",
+        "text": "Clinical {{equipoise}} exists when the expert community is genuinely uncertain which arm is better.",
         "acceptable": {
           "equipoise": [
             "equipoise"
@@ -800,7 +1026,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c044"
+        "id": "c057"
       },
       {
         "mode": "typed",
@@ -818,7 +1044,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c045"
+        "id": "c058"
       },
       {
         "mode": "mc",
@@ -835,7 +1061,7 @@
           "higher dosing"
         ],
         "shuffle": true,
-        "id": "c046"
+        "id": "c059"
       },
       {
         "mode": "typed",
@@ -852,7 +1078,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c047"
+        "id": "c060"
       },
       {
         "mode": "cloze",
@@ -861,9 +1087,9 @@
           "research",
           "endpoints"
         ],
-        "text": "A lab number used as a stand-in for patient benefit is a {{surrogate_endpoint}}.",
+        "text": "An outcome like LDL level or tumor size used as a stand-in for patient benefit is a {{surrogate endpoint}}.",
         "acceptable": {
-          "surrogate_endpoint": [
+          "surrogate endpoint": [
             "surrogate endpoint"
           ]
         },
@@ -871,7 +1097,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c048"
+        "id": "c061"
       },
       {
         "mode": "typed",
@@ -890,7 +1116,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c049"
+        "id": "c062"
       },
       {
         "mode": "cloze",
@@ -899,7 +1125,7 @@
           "research",
           "consent"
         ],
-        "text": "The mistake of confusing enrollment in a study with personalized care is the therapeutic {{misconception}}.",
+        "text": "When subjects think a study is being chosen mainly for their personal medical benefit, they are showing the therapeutic {{misconception}}.",
         "acceptable": {
           "misconception": [
             "misconception"
@@ -909,7 +1135,61 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c050"
+        "id": "c063"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "analysis"
+        ],
+        "prompt": "What analysis keeps participants in the groups they were randomized to, even if they drop out or stop following the protocol?",
+        "answers": [
+          "intention-to-treat",
+          "intention to treat"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c064"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "phases"
+        ],
+        "prompt": "Which trial phase mainly asks whether a new intervention is safe and what dose people can tolerate?",
+        "answers": [
+          "Phase I",
+          "phase 1"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c065"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03a",
+          "research",
+          "phases"
+        ],
+        "prompt": "Which trial phase usually compares a new treatment against the current standard in a large randomized study?",
+        "answers": [
+          "Phase III",
+          "phase 3"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c066"
       },
       {
         "mode": "typed",
@@ -927,7 +1207,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c051"
+        "id": "c067"
       },
       {
         "mode": "typed",
@@ -945,7 +1225,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c052"
+        "id": "c068"
       },
       {
         "mode": "typed",
@@ -963,7 +1243,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c053"
+        "id": "c069"
       },
       {
         "mode": "cloze",
@@ -972,20 +1252,17 @@
           "research-ethics",
           "belmont"
         ],
-        "text": "The Belmont Report names respect for persons, {{beneficence}}, and {{justice}}.",
+        "text": "Belmont's requirement to minimize harm and justify risk reflects {{beneficence}}.",
         "acceptable": {
           "beneficence": [
             "beneficence"
-          ],
-          "justice": [
-            "justice"
           ]
         },
         "fuzzy": {
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c054"
+        "id": "c070"
       },
       {
         "mode": "typed",
@@ -1002,7 +1279,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c055"
+        "id": "c071"
       },
       {
         "mode": "typed",
@@ -1020,7 +1297,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c056"
+        "id": "c072"
       },
       {
         "mode": "cloze",
@@ -1029,9 +1306,9 @@
           "research-ethics",
           "common-rule"
         ],
-        "text": "The 2018 Common Rule introduced {{broad_consent}} for some future secondary uses of data or biospecimens.",
+        "text": "A one-time agreement to future unspecified research uses of stored samples or data is {{broad consent}}.",
         "acceptable": {
-          "broad_consent": [
+          "broad consent": [
             "broad consent"
           ]
         },
@@ -1039,7 +1316,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c057"
+        "id": "c073"
       },
       {
         "mode": "typed",
@@ -1057,7 +1334,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c058"
+        "id": "c074"
       },
       {
         "mode": "cloze",
@@ -1066,7 +1343,7 @@
           "research-ethics",
           "misconduct"
         ],
-        "text": "Writing the hypothesis after seeing the results is {{HARKing}}.",
+        "text": "Presenting a hypothesis as if it came first, even though it was written after seeing the results, is {{HARKing}}.",
         "acceptable": {
           "HARKing": [
             "HARKing"
@@ -1076,7 +1353,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c059"
+        "id": "c075"
       },
       {
         "mode": "mc",
@@ -1093,7 +1370,60 @@
           "allocational vulnerability"
         ],
         "shuffle": true,
-        "id": "c060"
+        "id": "c076"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "vulnerability"
+        ],
+        "prompt": "What type of vulnerability arises when serious illness or lack of alternatives makes a study especially hard to refuse?",
+        "answers": [
+          "medical vulnerability",
+          "medical"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c077"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "vulnerability"
+        ],
+        "prompt": "What type of vulnerability arises when the local setting cannot reliably deliver the follow-up or post-trial care it promises?",
+        "answers": [
+          "infrastructural vulnerability",
+          "infrastructural"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c078"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-03b",
+          "research-ethics",
+          "belmont"
+        ],
+        "prompt": "Which Belmont principle is most directly implemented through real consent and extra protection for vulnerable participants?",
+        "answers": [
+          "respect for persons"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c079"
       },
       {
         "mode": "typed",
@@ -1110,7 +1440,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c061"
+        "id": "c080"
       },
       {
         "mode": "typed",
@@ -1127,7 +1457,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c062"
+        "id": "c081"
       },
       {
         "mode": "typed",
@@ -1144,7 +1474,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c063"
+        "id": "c082"
       },
       {
         "mode": "cloze",
@@ -1153,7 +1483,7 @@
           "abortion",
           "fallacies"
         ],
-        "text": "Sliding between the biological and moral senses of the word \"human\" is {{equivocation}}.",
+        "text": "Using the word \"human\" first in a biological sense and then in a moral sense within the same argument is {{equivocation}}.",
         "acceptable": {
           "equivocation": [
             "equivocation"
@@ -1163,7 +1493,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c064"
+        "id": "c083"
       },
       {
         "mode": "cloze",
@@ -1172,9 +1502,9 @@
           "abortion",
           "fallacies"
         ],
-        "text": "An argument commits {{begging_the_question}} when one premise already assumes the conclusion it is supposed to prove.",
+        "text": "If an argument assumes abortion is murder in a premise and then concludes abortion is wrong, it is {{begging the question}}.",
         "acceptable": {
-          "begging_the_question": [
+          "begging the question": [
             "begging the question"
           ]
         },
@@ -1182,7 +1512,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c065"
+        "id": "c084"
       },
       {
         "mode": "typed",
@@ -1199,7 +1529,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c066"
+        "id": "c085"
       },
       {
         "mode": "typed",
@@ -1217,7 +1547,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c067"
+        "id": "c086"
       },
       {
         "mode": "typed",
@@ -1235,7 +1565,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c068"
+        "id": "c087"
       },
       {
         "mode": "cloze",
@@ -1244,7 +1574,7 @@
           "abortion",
           "thomson"
         ],
-        "text": "Judith Jarvis Thomson argues that a right to life is not automatically a right to use someone else's {{body}}.",
+        "text": "In Thomson's violinist argument, a right to life does not automatically include a right to another person's {{body}}.",
         "acceptable": {
           "body": [
             "body"
@@ -1254,7 +1584,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c069"
+        "id": "c088"
       },
       {
         "mode": "mc",
@@ -1271,7 +1601,76 @@
           "Judith Jarvis Thomson"
         ],
         "shuffle": true,
-        "id": "c070"
+        "id": "c089"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "biology"
+        ],
+        "prompt": "What developmental term names the single cell formed at fertilization?",
+        "answers": [
+          "zygote"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c090"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "biology"
+        ],
+        "prompt": "What developmental term names the developing human from implantation through the eighth week?",
+        "answers": [
+          "embryo"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c091"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "biology"
+        ],
+        "prompt": "What developmental term names the developing human from the ninth week of gestation until birth?",
+        "answers": [
+          "fetus",
+          "foetus"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c092"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04a",
+          "abortion",
+          "thomson"
+        ],
+        "prompt": "What objection says Thomson's violinist argument may fit rape better than pregnancy from consensual sex because sex can create responsibility for a dependent being?",
+        "answers": [
+          "responsibility objection"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c093"
       },
       {
         "mode": "typed",
@@ -1288,7 +1687,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c071"
+        "id": "c094"
       },
       {
         "mode": "cloze",
@@ -1297,9 +1696,9 @@
           "abortion-law",
           "history"
         ],
-        "text": "Roman law treated the fetus as part of the mother: {{pars_viscerum_matris}}.",
+        "text": "In Roman law, the fetus was treated as part of the mother, or {{pars viscerum matris}}.",
         "acceptable": {
-          "pars_viscerum_matris": [
+          "pars viscerum matris": [
             "pars viscerum matris"
           ]
         },
@@ -1307,7 +1706,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c072"
+        "id": "c095"
       },
       {
         "mode": "typed",
@@ -1325,7 +1724,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c073"
+        "id": "c096"
       },
       {
         "mode": "typed",
@@ -1342,7 +1741,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c074"
+        "id": "c097"
       },
       {
         "mode": "cloze",
@@ -1351,9 +1750,9 @@
           "abortion-law",
           "roe"
         ],
-        "text": "Roe v. Wade created the {{trimester_framework}} for abortion regulation.",
+        "text": "Roe divided pregnancy regulation using a {{trimester framework}}.",
         "acceptable": {
-          "trimester_framework": [
+          "trimester framework": [
             "trimester framework"
           ]
         },
@@ -1361,7 +1760,7 @@
           "max_edit_distance": 1,
           "case_sensitive": false
         },
-        "id": "c075"
+        "id": "c098"
       },
       {
         "mode": "typed",
@@ -1379,29 +1778,25 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c076"
+        "id": "c099"
       },
       {
-        "mode": "cloze",
+        "mode": "typed",
         "tags": [
           "lecture-04b",
           "abortion-law",
           "dobbs"
         ],
-        "text": "Dobbs said unenumerated rights must be deeply rooted in the Nation's {{history}} and {{tradition}}.",
-        "acceptable": {
-          "history": [
-            "history"
-          ],
-          "tradition": [
-            "tradition"
-          ]
-        },
+        "prompt": "What test did Dobbs use for unenumerated rights, asking whether they are deeply rooted in the Nation's history and tradition?",
+        "answers": [
+          "history and tradition test",
+          "history-and-tradition test"
+        ],
         "fuzzy": {
-          "max_edit_distance": 1,
+          "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c077"
+        "id": "c100"
       },
       {
         "mode": "typed",
@@ -1419,7 +1814,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c078"
+        "id": "c101"
       },
       {
         "mode": "typed",
@@ -1437,7 +1832,7 @@
           "max_edit_distance": 2,
           "case_sensitive": false
         },
-        "id": "c079"
+        "id": "c102"
       },
       {
         "mode": "mc",
@@ -1454,7 +1849,59 @@
           "Schloendorff v. Society of New York Hospital"
         ],
         "shuffle": true,
-        "id": "c080"
+        "id": "c103"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "legal-method"
+        ],
+        "prompt": "What legal concept refers to an earlier court decision that later courts treat as authoritative?",
+        "answers": [
+          "precedent"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c104"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "medication"
+        ],
+        "prompt": "What 1873 federal statute is now cited in arguments about whether abortion pills can be mailed nationwide?",
+        "answers": [
+          "Comstock Act",
+          "the Comstock Act"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c105"
+      },
+      {
+        "mode": "typed",
+        "tags": [
+          "lecture-04b",
+          "abortion-law",
+          "legal-method"
+        ],
+        "prompt": "What do we call an opinion that agrees with the Court's judgment but gives separate reasoning?",
+        "answers": [
+          "concurrence"
+        ],
+        "fuzzy": {
+          "max_edit_distance": 2,
+          "case_sensitive": false
+        },
+        "id": "c106"
       }
     ]
   }

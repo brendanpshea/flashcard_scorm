@@ -7,8 +7,8 @@ A: quickening
 ---
 mode: cloze
 tags: lecture-04b, abortion-law, history
-Q: Roman law treated the fetus as part of the mother: {{pars_viscerum_matris}}.
-pars_viscerum_matris: pars viscerum matris
+Q: In Roman law, the fetus was treated as part of the mother, or {{pars viscerum matris}}.
+pars viscerum matris: pars viscerum matris
 
 ---
 mode: typed
@@ -26,8 +26,8 @@ A: stare decisis
 ---
 mode: cloze
 tags: lecture-04b, abortion-law, roe
-Q: Roe v. Wade created the {{trimester_framework}} for abortion regulation.
-trimester_framework: trimester framework
+Q: Roe divided pregnancy regulation using a {{trimester framework}}.
+trimester framework: trimester framework
 
 ---
 mode: typed
@@ -37,11 +37,11 @@ A: undue burden
 A: undue burden standard
 
 ---
-mode: cloze
+mode: typed
 tags: lecture-04b, abortion-law, dobbs
-Q: Dobbs said unenumerated rights must be deeply rooted in the Nation's {{history}} and {{tradition}}.
-history: history
-tradition: tradition
+Q: What test did Dobbs use for unenumerated rights, asking whether they are deeply rooted in the Nation's history and tradition?
+A: history and tradition test
+A: history-and-tradition test
 
 ---
 mode: typed
@@ -65,3 +65,22 @@ Q: Which case returned abortion regulation to the states by overturning Roe and 
 -: Roe v. Wade
 -: Planned Parenthood v. Casey
 -: Schloendorff v. Society of New York Hospital
+
+---
+mode: typed
+tags: lecture-04b, abortion-law, legal-method
+Q: What legal concept refers to an earlier court decision that later courts treat as authoritative?
+A: precedent
+
+---
+mode: typed
+tags: lecture-04b, abortion-law, medication
+Q: What 1873 federal statute is now cited in arguments about whether abortion pills can be mailed nationwide?
+A: Comstock Act
+A: the Comstock Act
+
+---
+mode: typed
+tags: lecture-04b, abortion-law, legal-method
+Q: What do we call an opinion that agrees with the Court's judgment but gives separate reasoning?
+A: concurrence

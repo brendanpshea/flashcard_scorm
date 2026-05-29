@@ -6,6 +6,7 @@
     "test": "node tests/test.mjs",
     "validate": "node tools/validate.js decks/sample-logic/cards.json",
     "md2json": "node tools/md2json.js",
+    "build:defaults": "node build.js --deck decks/sample-logic/cards.json --out dist/sample-logic-defaults.zip",
     "build:multi": "node tools/md2json.js decks/sample-multi/ --out decks/sample-multi/cards.json && node build.js --deck decks/sample-multi/cards.json --settings decks/sample-logic/settings-5week.json --out dist/sample-multi.zip",
     "build:5week": "node build.js --deck decks/sample-logic/cards.json --settings decks/sample-logic/settings-5week.json --out dist/sample-logic-5week.zip",
     "build:16week": "node build.js --deck decks/sample-logic/cards.json --settings decks/sample-logic/settings-16week.json --out dist/sample-logic-16week.zip",

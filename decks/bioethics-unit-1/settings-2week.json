@@ -3,8 +3,8 @@
   "schedule": {
     "duration_weeks": 2,
     "target_active_days_per_week": 4,
-    "daily_new_card_limit": 10,
-    "daily_review_limit": 120
+    "daily_new_card_limit": 14,
+    "daily_review_limit": 160
   },
   "scoring": {
     "pass_threshold": 0.7,

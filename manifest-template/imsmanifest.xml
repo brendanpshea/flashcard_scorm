@@ -32,6 +32,7 @@
       <file href="grader.js"/>
       <file href="scoring.js"/>
       <file href="persistence.js"/>
+      <file href="defaults.js"/>
       <file href="scorm-wrapper.js"/>
       <file href="styles.css"/>
       <file href="cards.json"/>
