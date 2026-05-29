@@ -3,6 +3,7 @@ import { gradeAnswer } from "./grader.js";
 import { computeScore, creditDueOffered, dayStreak } from "./scoring.js";
 import { encodeState, decodeState, byteSize, SIZE_WARN_BYTES_2004 } from "./persistence.js";
 import { mergeSettings } from "./defaults.js";
+import { createSessionState, nextSessionCard, recordSessionAnswer } from "./session.js";
 
 const $ = (sel) => document.querySelector(sel);
 const todayKey = () => today();   // integer day number
@@ -19,7 +20,7 @@ let currentIsNew = false;
 let cardShownAt = 0;
 let sessionStartedAt = 0;
 let sessionStreak = 0;
-let sessionTotal = 0;             // cards queued at the start of this session
+let sessionTotal = 0;             // cards that still need one correct answer
 let lastFocusBeforeModal = null;
 
 async function main() {
@@ -132,14 +133,16 @@ function startSession() {
   updateStreakDisplay();
   const today = todayKey();
   const todayCounts = activity.daily_counts[today] || { new: 0, reviews: 0, minutes: 0 };
-  session = buildSession(deck.cards, stateMap, settings, todayCounts);
+  const seededSession = buildSession(deck.cards, stateMap, settings, todayCounts);
   // Due work owed today = reviews already done today + those still queued.
   // Credit per day (keeping the max) so reopening the SCO can't inflate the
   // on-schedule denominator and penalize a student for studying diligently.
-  const dueOfferedToday = (todayCounts.reviews || 0) + session.reviews.length;
+  const dueOfferedToday = (todayCounts.reviews || 0) + seededSession.reviews.length;
   activity.due_offered_by_day = creditDueOffered(activity.due_offered_by_day, today, dueOfferedToday);
-  sessionTotal = session.reviews.length + session.new.length;
+  session = createSessionState(seededSession);
+  sessionTotal = session.remainingIds.size;
   $("#study-mode-banner").hidden = true;
+  refreshStats();
   showNextCard();
 }
 
@@ -149,12 +152,10 @@ function showNextCard() {
     currentCard = studyAheadQueue.shift();
     currentIsNew = false;
   } else {
-    const reviews = session.reviews;
-    const fresh = session.new;
-    if (reviews.length === 0 && fresh.length === 0) { renderDone(); return; }
-    const pickReview = reviews.length > 0 && (fresh.length === 0 || Math.random() < 0.8);
-    currentCard = pickReview ? reviews.shift() : fresh.shift();
-    currentIsNew = !pickReview;
+    if (!session || session.remainingIds.size === 0) { renderDone(); return; }
+    currentCard = nextSessionCard(session);
+    if (!currentCard) { renderDone(); return; }
+    currentIsNew = session.kindById[currentCard.id] === "new";
   }
   renderCard(currentCard);
   updateSessionProgress();
@@ -167,8 +168,7 @@ function showNextCard() {
 function updateSessionProgress() {
   const wrap = $("#session-progress");
   if (studyAheadQueue || !sessionTotal) { wrap.hidden = true; return; }
-  const queued = session.reviews.length + session.new.length;  // not yet seen
-  const left = queued + 1;                                      // + the current card
+  const left = session.remainingIds.size;
   const done = sessionTotal - left;
   wrap.hidden = false;
   $("#session-fill").style.width = (100 * done / sessionTotal).toFixed(0) + "%";
@@ -267,19 +267,29 @@ function onSubmit() {
 
   const result = gradeAnswer(currentCard, response, latency, settings);
   const { correct } = result;
+  const firstSeenThisSession = !studyAheadQueue && !session.seenIds.has(currentCard.id);
 
   // In study-ahead, never mutate SM-2 state or any grade-affecting counters.
   if (!studyAheadQueue) {
     const masteryReq = settings.scoring.mastery_requires;
     const wasMastered = isMastered(stateMap[currentCard.id], masteryReq);
     updateSM2(stateMap[currentCard.id], result.quality, settings.sm2);
+    const sessionUpdate = recordSessionAnswer(session, currentCard, correct);
     if (!wasMastered && isMastered(stateMap[currentCard.id], masteryReq)) {
       const n = deck.cards.reduce((acc, c) => acc + (isMastered(stateMap[c.id], masteryReq) ? 1 : 0), 0);
       showToast(`🎯 Mastered! ${n} of ${deck.cards.length}`, "mastered");
     }
     const today = todayKey();
+    if (sessionUpdate.promotedToReview) {
+      const dueReviewsToday = totalReviewsDueToday(today) + 1;
+      activity.due_offered_by_day = creditDueOffered(activity.due_offered_by_day, today, dueReviewsToday);
+    }
     const counts = activity.daily_counts[today] || { new: 0, reviews: 0, minutes: 0, practiced: 0, correct: 0 };
-    if (currentIsNew) counts.new += 1; else counts.reviews += 1;
+    if (firstSeenThisSession) {
+      session.seenIds.add(currentCard.id);
+      if (currentIsNew) counts.new += 1;
+      else counts.reviews += 1;
+    }
     counts.practiced = (counts.practiced || 0) + 1;
     if (correct) counts.correct = (counts.correct || 0) + 1;
     // Productive = spent real time (latency filter), right or wrong. Tracked
@@ -427,6 +437,15 @@ function recordSessionMinutes() {
   }
 }
 
+function totalReviewsDueToday(day = todayKey()) {
+  return Number(activity?.due_offered_by_day?.[day] || 0);
+}
+
+function completedReviewsToday(day = todayKey()) {
+  const pending = session?.pendingReviewIds?.size || 0;
+  return Math.max(0, totalReviewsDueToday(day) - pending);
+}
+
 /* ---------- Study-ahead ---------- */
 
 function enterStudyAhead() {
@@ -499,6 +518,7 @@ function refreshStats() {
   const score = computeScore(deck.cards, stateMap, activity, settings);
   const today = todayKey();
   const counts = activity.daily_counts[today] || { new: 0, reviews: 0, minutes: 0, practiced: 0, correct: 0 };
+  const reviewTotal = totalReviewsDueToday(today);
 
   // Today panel — the immediate feedback.
   const practiced = counts.practiced || 0;
@@ -511,7 +531,7 @@ function refreshStats() {
 
   // Daily caps.
   $("#stat-new").textContent = `${counts.new} / ${settings.schedule.daily_new_card_limit}`;
-  $("#stat-reviews").textContent = `${counts.reviews} / ${settings.schedule.daily_review_limit}`;
+  $("#stat-reviews").textContent = `${completedReviewsToday(today)} / ${reviewTotal}`;
 
   // Long-term progress. Mastered is a count (motivating as it climbs), shown
   // always. Engagement/completion are grade *fractions* that are near-zero by

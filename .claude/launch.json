@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "flashcards-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["serve.js", "preview/5week", "8137"],
+      "port": 8137
+    }
+  ]
+}

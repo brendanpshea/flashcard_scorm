@@ -4,6 +4,7 @@ import { gradeAnswer } from "../runtime/grader.js";
 import { computeScore, resolveTargetActiveDays, creditDueOffered, totalDueOffered, dayStreak } from "../runtime/scoring.js";
 import { DEFAULT_SETTINGS, mergeSettings } from "../runtime/defaults.js";
 import { encodeState, decodeState, byteSize, SCHEMA_VERSION } from "../runtime/persistence.js";
+import { createSessionState, nextSessionCard, recordSessionAnswer } from "../runtime/session.js";
 import assert from "node:assert/strict";
 
 let passed = 0, failed = 0;
@@ -303,6 +304,47 @@ test("buildSession respects daily caps", () => {
   for (const c of cards) stateMap[c.id] = newCardState(c.id);
   const sess = buildSession(cards, stateMap, SETTINGS, { new: 0, reviews: 0 });
   assert.equal(sess.new.length, 25);  // capped at daily_new_card_limit
+});
+
+test("session requeues misses to the tail until answered correctly once", () => {
+  const a = { id: "a" };
+  const b = { id: "b" };
+  const c = { id: "c" };
+  const session = createSessionState({ reviews: [a], new: [b, c] }, () => 0);
+
+  const first = nextSessionCard(session);
+  assert.equal(first.id, "a");
+  recordSessionAnswer(session, first, false);
+  assert.deepEqual(session.queue.map(card => card.id), ["b", "c", "a"]);
+  assert.equal(session.remainingIds.size, 3);
+
+  const second = nextSessionCard(session);
+  recordSessionAnswer(session, second, true);
+  const third = nextSessionCard(session);
+  recordSessionAnswer(session, third, true);
+  const fourth = nextSessionCard(session);
+  recordSessionAnswer(session, fourth, true);
+
+  assert.equal(fourth.id, "a");
+  assert.equal(session.remainingIds.size, 0);
+  assert.equal(nextSessionCard(session), null);
+});
+
+test("missed new card becomes a review until it is answered correctly", () => {
+  const a = { id: "a" };
+  const session = createSessionState({ reviews: [], new: [a] }, () => 0);
+
+  const first = nextSessionCard(session);
+  const miss = recordSessionAnswer(session, first, false);
+  assert.equal(miss.promotedToReview, true);
+  assert.equal(session.kindById.a, "review");
+  assert.equal(session.pendingReviewIds.size, 1);
+
+  const retry = nextSessionCard(session);
+  const ok = recordSessionAnswer(session, retry, true);
+  assert.equal(ok.promotedToReview, false);
+  assert.equal(session.pendingReviewIds.size, 0);
+  assert.equal(session.remainingIds.size, 0);
 });
 
 /* ---- Persistence ---- */
