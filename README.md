@@ -113,13 +113,14 @@ The grader returns a quality score 0–5 derived from correctness and response l
 ## Scoring model
 
 ```
-final = mastery × (engagement_floor + (1 - engagement_floor) × engagement) × completion
+final = mastery × (engagement_floor + (1 - engagement_floor) × engagement)
 ```
 
-- **mastery** = mastered cards / total cards. A card is mastered when `correct_count ≥ N` AND `interval_days ≥ M` (configurable per class).
+- **mastery** = mastered cards / total cards. A card is mastered when `correct_count ≥ N`, it isn't currently lapsed, and — if `min_interval_days` is set for the class — its current review interval has reached that many days.
 - **engagement** = weighted combination of consistency (active days / target), productive volume, and on-schedule reviews. Capped at 1.0 — grinding past target gives nothing.
-- **completion** = cards seriously attempted (≥2 attempts, ≥1 correct) / total. Stops cherry-picking the easy cards.
 - **engagement_floor** = 0.6 by default. A student with perfect mastery but zero engagement caps at 60% of mastery; with full engagement, 100%. Engagement is required for top marks but never zeros out the grade outright.
+
+**Completion is not a grade factor.** Cards seriously attempted (≥2 attempts, ≥1 correct) / total is still computed and shown to the student, and it drives `cmi.progress_measure` and the "completed" status — but it's deliberately kept out of the grade. Cherry-picking is already capped by mastery, whose denominator is the whole deck: master only the easy 20% and mastery is 0.20, no matter how the rest is left.
 
 The score sent to D2L is recomputed deterministically from the source state on every submit. No cached score field — change the formula and it just works on next launch.
 
@@ -140,7 +141,8 @@ Per-offering tunables live in a separate JSON file. Same deck, different setting
     "duration_weeks": 5,
     "target_active_days_per_week": 4,
     "daily_new_card_limit": 25,
-    "daily_review_limit": 150
+    "daily_review_limit": 150,
+    "day_boundary": "local"
   },
   "scoring": {
     "pass_threshold": 0.7,
@@ -150,6 +152,7 @@ Per-offering tunables live in a separate JSON file. Same deck, different setting
   "engagement": {
     "weights": { "consistency": 0.5, "volume": 0.3, "on_schedule": 0.2 },
     "min_session_minutes_for_active_day": 5,
+    "min_cards_for_active_day": 8,
     "min_latency_ms_for_productive_review": 800,
     "desired_passes_per_card": 3
   },
@@ -164,6 +167,7 @@ The deck stays calendar-agnostic; D2L handles per-section availability dates and
 - **Version**: SCORM 2004 4th Edition. Single SCO per package.
 - **Suspend data**: versioned wire format with short keys, integer day numbers, and lazy-init (only attempted cards are persisted). A 200-card semester deck encodes in ~10–20KB, well under the 64KB cap. A `commit()`-time size guard logs a warning above ~50KB.
 - **Score commit**: `cmi.score.scaled`, `cmi.score.raw`, `cmi.progress_measure` updated on every submit; `LMSCommit` called immediately. `cmi.completion_status` flips to `"completed"` at ≥95% completion; `cmi.success_status` to `"passed"` once the score crosses `pass_threshold`.
+- **Resume & time**: on termination the SCO sets `cmi.exit = "suspend"` so the LMS resumes (not restarts) the attempt and hands `suspend_data` back on next launch, and reports time-on-task via `cmi.session_time` (ISO 8601 duration).
 - **Standalone mode**: when no LMS API is detected, `scorm-wrapper.js` falls back to a `localStorage`-backed stub. Same code path runs in both environments — no #ifdefs.
 
 ### One package per deck/unit
@@ -183,7 +187,7 @@ Several decisions stack to make the grade hard to fake:
 
 - **Self-rating tunes scheduling, not grade.** A student who lies about knowing a card sees it more often; the gradebook stays honest.
 - **Mastery requires spaced confirmation.** Three correct answers on day 1 doesn't make a card "mastered" — the SM-2 interval has to actually elapse.
-- **Completion factor.** A student who masters only the easy 20% of cards caps their score proportionally. Forces engagement with the whole deck.
+- **Whole-deck mastery.** Mastery is mastered/total, so a student who masters only the easy 20% caps at 0.20. No separate completion penalty needed — the denominator does the work.
 - **Latency filter.** Sub-`min_latency_ms_for_productive_review` answers don't count toward engagement, even if correct. Stops spam-clicking through cards.
 - **Engagement caps.** Once the target is hit, more time/reviews give nothing. Cramming the night before doesn't move the engagement number.
 

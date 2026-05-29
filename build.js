@@ -31,9 +31,17 @@ const deckTitle = deck.deck?.title || "Flashcards";
 const deckId = deck.deck?.id || "deck";
 const manifestId = `MAN-${deckId}-${Date.now()}`;
 
-const manifest = fs.readFileSync(manifestSrc, "utf8")
-  .replace(/\{\{MANIFEST_ID\}\}/g, manifestId)
-  .replace(/\{\{DECK_TITLE\}\}/g, escapeXml(deckTitle));
+// Build the manifest from the actual content files so adding a runtime asset
+// can't silently drift from the <file> list. `href` is the launch file.
+function buildManifest(contentFiles) {
+  const fileEntries = contentFiles
+    .map(f => `      <file href="${escapeXml(f.name)}"/>`)
+    .join("\n");
+  return fs.readFileSync(manifestSrc, "utf8")
+    .replace(/\{\{MANIFEST_ID\}\}/g, manifestId)
+    .replace(/\{\{DECK_TITLE\}\}/g, escapeXml(deckTitle))
+    .replace(/\{\{FILES\}\}/g, fileEntries);
+}
 
 function run() {
   const files = collectFiles();
@@ -49,16 +57,18 @@ function run() {
 // --- helpers ---
 
 function collectFiles() {
-  const out = [];
+  const content = [];
   for (const name of fs.readdirSync(runtimeDir)) {
     if (name === "package.json") continue;  // Node-only scoping, not a runtime asset
-    out.push({ name, data: fs.readFileSync(path.join(runtimeDir, name)) });
+    content.push({ name, data: fs.readFileSync(path.join(runtimeDir, name)) });
   }
-  out.push({ name: "cards.json", data: fs.readFileSync(deckPath) });
+  content.push({ name: "cards.json", data: fs.readFileSync(deckPath) });
   const settingsData = settingsPath ? fs.readFileSync(settingsPath) : Buffer.from("{}", "utf8");
-  out.push({ name: "class_settings.json", data: settingsData });
-  out.push({ name: "imsmanifest.xml", data: Buffer.from(manifest, "utf8") });
-  return out;
+  content.push({ name: "class_settings.json", data: settingsData });
+
+  // The manifest enumerates the content files but isn't itself a listed <file>.
+  const manifest = buildManifest(content);
+  return [...content, { name: "imsmanifest.xml", data: Buffer.from(manifest, "utf8") }];
 }
 
 function writePreview(dir, files) {

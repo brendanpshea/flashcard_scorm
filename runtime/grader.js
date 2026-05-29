@@ -5,30 +5,32 @@ export function gradeAnswer(card, response, latencyMs, settings) {
   const productive = latencyMs >= minLatency;
 
   let correct = false, close = false;
+  let perBlank = null;   // populated for cloze; null otherwise
   if (card.mode === "typed") {
     const tol = card.fuzzy?.max_edit_distance ?? 2;
     const cs = card.fuzzy?.case_sensitive ?? false;
     const r = norm(response, cs);
-    correct = card.answers.some(a => editDistance(norm(a, cs), r) <= tol);
-    close = !correct && card.answers.some(a => editDistance(norm(a, cs), r) <= tol + 2);
+    const { dist, len } = bestMatch(card.answers, r, cs);
+    correct = dist <= tol;
+    close = !correct && isClose(dist, tol, len);
   } else if (card.mode === "mc") {
     correct = response === card.correct;
   } else if (card.mode === "cloze") {
     const cs = card.case_sensitive ?? false;
     const tol = card.fuzzy?.max_edit_distance ?? 1;
-    const perBlank = {};
+    perBlank = {};
     let allCorrect = true, anyClose = false;
     for (const k of Object.keys(card.acceptable)) {
       const r = norm(response?.[k] ?? "", cs);
-      const ok = card.acceptable[k].some(a => editDistance(norm(a, cs), r) <= tol);
-      const closeOnly = !ok && card.acceptable[k].some(a => editDistance(norm(a, cs), r) <= tol + 2);
+      const { dist, len } = bestMatch(card.acceptable[k], r, cs);
+      const ok = dist <= tol;
+      const closeOnly = !ok && isClose(dist, tol, len);
       perBlank[k] = { correct: ok, close: closeOnly };
       if (!ok) allCorrect = false;
       if (closeOnly) anyClose = true;
     }
     correct = allCorrect;
     close = !correct && anyClose;
-    var cloze_per_blank = perBlank;
   }
 
   let quality;
@@ -37,7 +39,29 @@ export function gradeAnswer(card, response, latencyMs, settings) {
   else if (close) quality = 2;
   else quality = 1;
 
-  return { quality, correct, productive, perBlank: typeof cloze_per_blank !== "undefined" ? cloze_per_blank : null };
+  return { quality, correct, productive, perBlank };
+}
+
+// Edit distance to the nearest acceptable answer, plus that answer's length
+// (used to scale the "close" band to the size of the word).
+function bestMatch(answers, r, cs) {
+  let dist = Infinity, len = 0;
+  for (const a of answers) {
+    const na = norm(a, cs);
+    const d = editDistance(na, r);
+    if (d < dist) { dist = d; len = na.length; }
+  }
+  return { dist, len };
+}
+
+// "Close" = a genuine near-miss worth a "so close" nudge: just past the
+// tolerance (one extra edit) AND small relative to the answer. Without the
+// length term, every wrong short answer ("dog" vs "cat") would read as close.
+const CLOSE_LEN_RATIO = 0.34;  // within roughly a third of the word
+function isClose(dist, tol, targetLen) {
+  return dist > tol
+      && dist <= tol + 1
+      && dist <= Math.ceil(targetLen * CLOSE_LEN_RATIO);
 }
 
 function norm(s, caseSensitive) {

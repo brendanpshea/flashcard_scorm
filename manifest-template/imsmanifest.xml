@@ -26,17 +26,7 @@
   </organizations>
   <resources>
     <resource identifier="RES-1" type="webcontent" adlcp:scormType="sco" href="index.html">
-      <file href="index.html"/>
-      <file href="app.js"/>
-      <file href="sm2.js"/>
-      <file href="grader.js"/>
-      <file href="scoring.js"/>
-      <file href="persistence.js"/>
-      <file href="defaults.js"/>
-      <file href="scorm-wrapper.js"/>
-      <file href="styles.css"/>
-      <file href="cards.json"/>
-      <file href="class_settings.json"/>
+{{FILES}}
     </resource>
   </resources>
 </manifest>

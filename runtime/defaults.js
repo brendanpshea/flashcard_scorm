@@ -5,7 +5,8 @@ export const DEFAULT_SETTINGS = {
   course: null,                // optional display tag; hidden when null
   schedule: {
     daily_new_card_limit: 20,
-    daily_review_limit: 100
+    daily_review_limit: 100,
+    day_boundary: "local"   // "local" | "utc" — when the study day rolls over
     // target_active_days: omitted → derived from deck size
   },
   scoring: {
@@ -16,6 +17,7 @@ export const DEFAULT_SETTINGS = {
   engagement: {
     weights: { consistency: 0.5, volume: 0.3, on_schedule: 0.2 },
     min_session_minutes_for_active_day: 5,
+    min_cards_for_active_day: 8,   // OR-path: a short but real study burst still counts
     min_latency_ms_for_productive_review: 800,
     desired_passes_per_card: 3
   },

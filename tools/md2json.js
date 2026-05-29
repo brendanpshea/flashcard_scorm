@@ -161,7 +161,10 @@ function parseCard(text) {
       continue;
     }
     if (card.mode === "cloze" && (m = line.match(/^([^:]+):\s*(.+)$/))) {
-      cloze[m[1].trim()] = m[2].trim();
+      const key = m[1].trim();
+      // Alternates: repeat the key on multiple lines, or separate with "|".
+      const vals = m[2].split("|").map(s => s.trim()).filter(Boolean);
+      (cloze[key] || (cloze[key] = [])).push(...vals);
       continue;
     }
     promptLines.push(line);
@@ -183,10 +186,10 @@ function parseCard(text) {
     card.acceptable = {};
     const keys = [...prompt.matchAll(/\{\{([^}]+)\}\}/g)].map(x => x[1]);
     for (const k of keys) {
-      if (!cloze[k]) throw new Error(`cloze missing answer for key '${k}'`);
+      if (!cloze[k] || !cloze[k].length) throw new Error(`cloze missing answer for key '${k}'`);
     }
     for (const [k, v] of Object.entries(cloze)) {
-      card.acceptable[k] = [v];
+      card.acceptable[k] = v;  // array of one or more accepted answers
     }
     card.fuzzy = { max_edit_distance: 1, case_sensitive: false };
   } else {

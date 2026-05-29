@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Flashcards</title>
   <link rel="stylesheet" href="./styles.css" />
   <script src="./scorm-wrapper.js"></script>
@@ -20,13 +21,12 @@
         </section>
         <section class="intro-screen" data-screen="2" hidden>
           <h2>How you're graded</h2>
-          <p>Your score has three parts, and they multiply:</p>
+          <p>Your score combines two things:</p>
           <ul class="grade-parts">
-            <li><strong>Mastery</strong> — did you actually learn the cards?</li>
+            <li><strong>Mastery</strong> — did you actually learn the cards, across the whole deck?</li>
             <li><strong>Engagement</strong> — did you study across many days, not just one?</li>
-            <li><strong>Completion</strong> — did you work through the whole deck, not just the easy cards?</li>
           </ul>
-          <p class="muted">You can't max out by cramming, and you can't max out by clicking through quickly. Steady study wins.</p>
+          <p class="muted">Mastery counts every card in the deck, so you can't max out on just the easy ones — and you can't max out by cramming or clicking through quickly. Steady study wins.</p>
         </section>
         <section class="intro-screen" data-screen="3" hidden>
           <h2>You're ready</h2>
@@ -41,6 +41,9 @@
         </div>
         <button id="intro-next">Next</button>
       </div>
+      <div class="intro-footer">
+        <button id="reset-btn" class="link-btn danger" aria-label="Reset all progress">Reset all progress</button>
+      </div>
     </div>
   </div>
 
@@ -48,7 +51,10 @@
     <h1 id="deck-title">Loading…</h1>
     <span id="course-tag" class="tag"></span>
     <div class="header-spacer"></div>
-    <div class="streak" id="streak" title="Correct answers in a row this session" aria-label="Session streak">
+    <div class="day-streak" id="day-streak" hidden title="Days studied in a row — keep it going!" aria-label="Day streak">
+      <span class="streak-icon" aria-hidden="true">🔥</span><span id="day-streak-count">0</span>
+    </div>
+    <div class="streak" id="streak" hidden title="Correct answers in a row this session" aria-label="Session streak">
       <span class="streak-icon" aria-hidden="true">★</span><span id="streak-count">0</span>
     </div>
     <button id="show-intro" class="icon-btn" title="How this works" aria-label="How this works">?</button>
@@ -67,12 +73,17 @@
       <div id="study-mode-banner" class="study-mode-banner" hidden role="note">
         📚 Study ahead — this won't change your grade.
       </div>
+      <div id="session-progress" class="session-progress" hidden aria-live="polite">
+        <div class="session-progress-bar"><div id="session-fill"></div></div>
+        <span id="session-left" class="session-left"></span>
+      </div>
       <div id="card-body"></div>
       <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
       <div class="actions">
         <button id="submit-btn">Submit</button>
         <button id="next-btn" hidden disabled>Next</button>
         <button id="study-ahead-btn" hidden class="link-btn">Study ahead</button>
+        <span id="enter-hint" class="enter-hint" hidden>Press <kbd>↵</kbd></span>
       </div>
     </section>
     <aside class="stats" aria-label="Study statistics">
@@ -86,20 +97,19 @@
         </div>
       </div>
       <hr />
-      <div class="stat-row"><label>New today</label><span id="stat-new">0 / 0</span></div>
-      <div class="stat-row"><label>Reviews today</label><span id="stat-reviews">0 / 0</span></div>
+      <div class="stat-row" title="New cards introduced today, and the daily limit."><label>New today</label><span id="stat-new">0 / 0</span></div>
+      <div class="stat-row" title="Cards reviewed today, and the daily limit."><label>Reviews today</label><span id="stat-reviews">0 / 0</span></div>
       <hr />
-      <div class="stat-row"><label>Mastered</label><span id="stat-mastery">—</span></div>
-      <div class="stat-row"><label>Engagement</label><span id="stat-engagement">—</span></div>
-      <div class="stat-row"><label>Completion</label><span id="stat-completion">—</span></div>
-      <div class="stat-row big" id="score-row">
+      <div class="stat-row" title="Cards you've learned for keeps — answered correctly enough times, with the spacing actually elapsed. Climbs as you keep returning."><label>Mastered</label><span id="stat-mastery">—</span></div>
+      <div class="stat-row" title="Rewards studying across many days, not cramming. Build it by coming back regularly and clearing your due reviews."><label>Engagement</label><span id="stat-engagement">—</span></div>
+      <div class="stat-row" title="How much of the whole deck you've seriously worked through. Don't just cherry-pick the easy cards."><label>Completion</label><span id="stat-completion">—</span></div>
+      <div class="stat-row big" id="score-row" title="Your gradebook score = mastery × engagement. It updates automatically and is sent to your LMS.">
         <label>Gradebook score</label><span id="stat-final">—</span>
       </div>
       <div class="score-narrative" id="score-narrative" hidden></div>
-      <hr />
-      <button id="reset-btn" class="link-btn danger" aria-label="Reset all progress">Reset progress</button>
     </aside>
   </main>
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

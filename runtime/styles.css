@@ -1,5 +1,6 @@
 * { box-sizing: border-box; }
 :root {
+  color-scheme: light dark;
   --bg: #fbf8f3;
   --surface: #ffffff;
   --ink: #1f2430;
@@ -13,7 +14,32 @@
   --bad-soft: #fbe6e6;
   --warn: #c2962a;
   --warn-soft: #fdf3d4;
+  --warn-ink: #6c4f10;     /* readable text on --warn-soft */
+  --field-bg: #ffffff;
+  --field-border: #ccd2db;
   --shadow: 0 2px 8px rgba(40, 30, 10, 0.06), 0 1px 2px rgba(40, 30, 10, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1714;
+    --surface: #24201c;
+    --ink: #ece7df;
+    --muted: #9a9286;
+    --line: #3a342d;
+    --accent: #e0954a;        /* brighter so it carries contrast on dark */
+    --accent-soft: #3a2c1c;
+    --ok: #4cba88;
+    --ok-soft: #1e3329;
+    --bad: #e57373;
+    --bad-soft: #3a2020;
+    --warn: #d8b24a;
+    --warn-soft: #332b16;
+    --warn-ink: #e8cf8a;
+    --field-bg: #2b2620;
+    --field-border: #4a4339;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
 }
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -43,6 +69,14 @@ header h1 { margin: 0; font-size: 1.15rem; font-weight: 600; }
 }
 .streak.bump { transform: scale(1.15); }
 .streak-icon { font-size: 1rem; }
+.day-streak {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-weight: 700; color: var(--accent);
+  background: var(--accent-soft); padding: 0.3rem 0.65rem;
+  border-radius: 999px; font-size: 0.9rem;
+}
+/* display: inline-flex above would otherwise defeat the `hidden` attribute. */
+.streak[hidden], .day-streak[hidden] { display: none; }
 .icon-btn {
   width: 32px; height: 32px; border-radius: 50%;
   border: 1px solid var(--line); background: var(--surface);
@@ -95,14 +129,25 @@ main {
   75% { transform: translateX(6px); }
 }
 
+/* Center the prompt/answer in the card's free space so cards don't feel
+   top-heavy with a large void beneath a short input. */
+#card-body {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+}
+/* Small "what to do" cue above each prompt. */
+.mode-cue {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+}
 .prompt {
   font-size: 1.2rem; line-height: 1.55; margin: 0 0 1.25rem;
   color: var(--ink);
 }
 input[type="text"], .cloze-input {
   font-size: 1rem; padding: 0.55rem 0.7rem;
-  border: 1px solid #ccd2db; border-radius: 6px;
-  background: #fff; min-width: 8rem; font-family: inherit;
+  border: 1px solid var(--field-border); border-radius: 6px;
+  background: var(--field-bg); color: var(--ink);
+  min-width: 8rem; font-family: inherit;
 }
 input[type="text"]:focus, .cloze-input:focus {
   outline: none; border-color: var(--accent);
@@ -115,7 +160,7 @@ input[type="text"]:focus, .cloze-input:focus {
   display: flex; align-items: center; gap: 0.55rem;
   padding: 0.6rem 0.85rem; cursor: pointer;
   border: 1px solid var(--line); border-radius: 8px;
-  background: #fff; transition: background 0.15s, border-color 0.15s;
+  background: var(--field-bg); transition: background 0.15s, border-color 0.15s;
 }
 .choices label:hover { background: var(--accent-soft); border-color: var(--accent); }
 .choices label.reveal-correct { background: var(--ok-soft); border-color: var(--ok); }
@@ -123,7 +168,14 @@ input[type="text"]:focus, .cloze-input:focus {
 .choices input { margin: 0; }
 
 /* Actions */
-.actions { margin-top: auto; padding-top: 1.25rem; display: flex; gap: 0.5rem; }
+.actions { margin-top: auto; padding-top: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+.enter-hint { margin-left: auto; font-size: 0.75rem; color: var(--muted); }
+.enter-hint[hidden] { display: none; }
+.enter-hint kbd {
+  font-family: inherit; font-size: 0.78rem; color: var(--ink);
+  background: var(--field-bg); border: 1px solid var(--field-border);
+  border-radius: 4px; padding: 0 0.35rem;
+}
 button {
   padding: 0.55rem 1.35rem; font-size: 0.95rem; font-weight: 600;
   border: 0; border-radius: 8px;
@@ -156,7 +208,7 @@ button:disabled { background: var(--line); color: var(--muted); cursor: not-allo
 .feedback .answer-compare .truth { color: var(--ok); font-weight: 600; }
 .feedback .hint {
   margin-top: 0.4rem; padding: 0.4rem 0.65rem;
-  background: var(--warn-soft); color: #6c4f10;
+  background: var(--warn-soft); color: var(--warn-ink);
   border-radius: 6px; font-size: 0.85rem;
   font-style: italic;
 }
@@ -227,7 +279,26 @@ button:disabled { background: var(--line); color: var(--muted); cursor: not-allo
 /* Cloze per-blank reveal */
 .cloze-input.blank-ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
 .cloze-input.blank-bad { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
-.cloze-input.blank-close { background: var(--warn-soft); border-color: var(--warn); color: #6c4f10; }
+.cloze-input.blank-close { background: var(--warn-soft); border-color: var(--warn); color: var(--warn-ink); }
+
+/* Session finish-line */
+.session-progress {
+  display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.1rem;
+}
+.session-progress[hidden] { display: none; }
+.session-progress-bar {
+  flex: 1; height: 6px; background: var(--line);
+  border-radius: 999px; overflow: hidden;
+}
+#session-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), #e0a456);
+  transition: width 0.4s ease;
+}
+.session-left {
+  font-size: 0.78rem; color: var(--muted); font-weight: 600;
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+}
 
 /* Study-ahead banner */
 .study-mode-banner {
@@ -237,9 +308,13 @@ button:disabled { background: var(--line); color: var(--muted); cursor: not-allo
   border: 1px dashed var(--accent);
 }
 
-/* Danger button */
-.link-btn.danger { color: var(--bad); margin-top: 0.5rem; width: 100%; text-align: left; }
+/* Danger button (lives in the help modal footer — intentional, not one stray click away) */
+.link-btn.danger { color: var(--bad); font-size: 0.82rem; }
 .link-btn.danger:hover { background: var(--bad-soft); color: var(--bad); }
+.intro-footer {
+  margin-top: 1rem; padding-top: 0.85rem;
+  border-top: 1px solid var(--line); text-align: center;
+}
 
 /* Focus rings — accessibility */
 button:focus-visible {
@@ -276,13 +351,49 @@ button:focus-visible {
   line-height: 1.4;
 }
 
+/* Celebration toasts (e.g. mastering a card) */
+.toast-region {
+  position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  z-index: 200; pointer-events: none;
+}
+.toast {
+  background: #2b2620; color: #fff;   /* self-contained dark pill in both themes */
+  padding: 0.6rem 1.1rem; border-radius: 999px;
+  font-size: 0.95rem; font-weight: 600;
+  box-shadow: 0 6px 20px rgba(40, 30, 10, 0.22);
+  opacity: 0; transform: translateY(12px) scale(0.96);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast.mastered { background: linear-gradient(90deg, var(--accent), #e0a456); }
+.toast.show { opacity: 1; transform: translateY(0) scale(1); }
+
 /* Visually hidden but available to screen readers */
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
 
+/* Responsive — phones & small tablets. The two-column grid stacks to one,
+   stats drop below the card, and the primary action goes full-width for thumbs. */
+@media (max-width: 720px) {
+  header { padding: 0.7rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
+  header h1 { font-size: 1.05rem; min-width: 0; }
+  .mastery-bar-wrap { padding: 0.5rem 1rem 0; }
+  main {
+    grid-template-columns: 1fr;
+    gap: 1rem; padding: 1rem 1rem 2rem;
+  }
+  .card { padding: 1.5rem 1.25rem 1.25rem; min-height: 230px; }
+  .prompt { font-size: 1.1rem; }
+  .actions { flex-direction: column; align-items: stretch; }
+  .actions button:not(.link-btn) { width: 100%; }
+  .actions .link-btn { align-self: center; }
+  .enter-hint { display: none; }   /* touch users tap; no keyboard hint needed */
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .card.flash-ok, .card.flash-bad, .streak.bump { animation: none; transition: none; }
+  .toast { transition: none; }
 }

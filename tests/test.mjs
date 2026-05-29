@@ -1,7 +1,7 @@
 // Run with: node tests/test.mjs
-import { newCardState, updateSM2, isMastered, isDue, buildSession, today } from "../runtime/sm2.js";
+import { newCardState, updateSM2, isMastered, isDue, buildSession, today, configureDayBoundary, MS_PER_DAY } from "../runtime/sm2.js";
 import { gradeAnswer } from "../runtime/grader.js";
-import { computeScore, resolveTargetActiveDays } from "../runtime/scoring.js";
+import { computeScore, resolveTargetActiveDays, creditDueOffered, totalDueOffered, dayStreak } from "../runtime/scoring.js";
 import { DEFAULT_SETTINGS, mergeSettings } from "../runtime/defaults.js";
 import { encodeState, decodeState, byteSize, SCHEMA_VERSION } from "../runtime/persistence.js";
 import assert from "node:assert/strict";
@@ -74,6 +74,33 @@ test("isMastered after 3 corrects; lapse drops mastery", () => {
   assert.ok(isMastered(s, { correct_count: 3 }));
 });
 
+test("isMastered honors optional min_interval_days gate", () => {
+  const s = newCardState("c1");
+  updateSM2(s, 5, sm2);  // interval 1
+  updateSM2(s, 5, sm2);  // interval 6
+  // correct_count=2 here; bump to 3 corrects to clear the count requirement.
+  updateSM2(s, 5, sm2);  // interval ~15
+  assert.ok(isMastered(s, { correct_count: 3, min_interval_days: 5 }));   // 15 >= 5
+  assert.ok(!isMastered(s, { correct_count: 3, min_interval_days: 30 }));  // 15 < 30
+  // A card with enough corrects but a short interval is gated out.
+  const t = newCardState("c2");
+  updateSM2(t, 5, sm2); updateSM2(t, 1, sm2); updateSM2(t, 5, sm2);  // lapsed then 1 correct → interval 1, reps 1, correct 2
+  assert.ok(!isMastered(t, { correct_count: 2, min_interval_days: 5 }));  // interval 1 < 5
+});
+
+test("day boundary: utc mode matches raw UTC day; local mode applies offset", () => {
+  configureDayBoundary("utc");
+  assert.equal(today(), Math.floor(Date.now() / MS_PER_DAY));
+  configureDayBoundary("local");
+  const off = new Date().getTimezoneOffset() * 60000;
+  assert.equal(today(), Math.floor((Date.now() - off) / MS_PER_DAY));
+  // local and utc differ by at most one day number.
+  configureDayBoundary("utc"); const u = today();
+  configureDayBoundary("local"); const l = today();
+  assert.ok(Math.abs(u - l) <= 1);
+  configureDayBoundary("local");  // restore default for later tests
+});
+
 /* ---- Grader ---- */
 
 test("typed: exact match → quality 5 when fast enough", () => {
@@ -94,6 +121,22 @@ test("typed: way off → close vs wrong", () => {
   const card = { mode: "typed", answers: ["modus ponens"], fuzzy: { max_edit_distance: 2 } };
   assert.equal(gradeAnswer(card, "wombat", 2000, SETTINGS).quality, 1);
   assert.equal(gradeAnswer(card, "modus poens", 2000, SETTINGS).correct, true);
+});
+
+test("close band: near-miss on a long word reads as close (quality 2)", () => {
+  const card = { mode: "typed", answers: ["modus ponens"], fuzzy: { max_edit_distance: 2 } };
+  // "modus ponxxx": 3 edits — past tolerance but small relative to a 12-char word.
+  const r = gradeAnswer(card, "modus ponxxx", 2000, SETTINGS);
+  assert.equal(r.correct, false);
+  assert.equal(r.quality, 2);
+});
+
+test("close band: a different short word is NOT close (quality 1)", () => {
+  const card = { mode: "typed", answers: ["cat"], fuzzy: { max_edit_distance: 2 } };
+  // "dogs" is edit distance 4 — the old tol+2 rule called this "close"; it isn't.
+  const r = gradeAnswer(card, "dogs", 2000, SETTINGS);
+  assert.equal(r.correct, false);
+  assert.equal(r.quality, 1);
 });
 
 test("mc: matches `correct` exactly", () => {
@@ -137,6 +180,24 @@ test("perfect mastery + zero engagement → score = floor * mastery", () => {
   assert.equal(Math.round(s.final * 100), 60);
 });
 
+test("completion is not a grade factor (same mastery+engagement → same score)", () => {
+  // Both decks: 2 cards, card a mastered (mastery=0.5), zero engagement.
+  // They differ only in completion — which must not move the grade.
+  const mkA = () => { const s = newCardState("a"); for (let i=0;i<3;i++) updateSM2(s,5,sm2); return s; };
+  const activity = { active_days: [], productive_reviews: 0, on_schedule_reviews: 0, due_offered_by_day: {} };
+
+  // b untouched → completion = 0.5
+  const low = computeScore([{id:"a"},{id:"b"}], { a: mkA(), b: newCardState("b") }, activity, SETTINGS);
+  // b seriously attempted but not mastered → completion = 1.0
+  const bAttempted = newCardState("b"); updateSM2(bAttempted,5,sm2); updateSM2(bAttempted,1,sm2);
+  const high = computeScore([{id:"a"},{id:"b"}], { a: mkA(), b: bAttempted }, activity, SETTINGS);
+
+  assert.ok(low.completion < high.completion);   // completion really does differ
+  assert.equal(low.mastery, high.mastery);
+  assert.equal(low.final, high.final);            // ...but the grade does not
+  assert.equal(Math.round(low.final * 100), 30);  // 0.5 mastery * 0.6 floor
+});
+
 test("partial mastery still scales by engagement floor", () => {
   const deck = [{ id: "a" }, { id: "b" }];
   const stateMap = { a: newCardState("a"), b: newCardState("b") };
@@ -148,6 +209,64 @@ test("partial mastery still scales by engagement floor", () => {
                      productive_reviews: 6, on_schedule_reviews: 0, due_reviews_offered: 1 };
   const s = computeScore(deck, stateMap, activity, SETTINGS);
   assert.ok(s.final > 0 && s.final < 1);
+});
+
+/* ---- Day streak ---- */
+
+test("dayStreak counts consecutive days up to today", () => {
+  assert.equal(dayStreak([], 100), 0);
+  assert.equal(dayStreak([100], 100), 1);
+  assert.equal(dayStreak([98, 99, 100], 100), 3);
+  // Out-of-order input still works.
+  assert.equal(dayStreak([100, 98, 99], 100), 3);
+});
+
+test("dayStreak stays alive on a not-yet-active today, breaks after a gap", () => {
+  // Studied through yesterday but not yet today → streak still counts (alive).
+  assert.equal(dayStreak([97, 98, 99], 100), 3);
+  // Missed yesterday entirely → broken.
+  assert.equal(dayStreak([95, 96, 97], 100), 0);
+  // A gap only counts the run ending at the anchor.
+  assert.equal(dayStreak([90, 91, 99, 100], 100), 2);
+});
+
+/* ---- Engagement: due-offered accounting (relaunch stability) ---- */
+
+test("creditDueOffered keeps the per-day max, idempotent across relaunches", () => {
+  let m = {};
+  m = creditDueOffered(m, 100, 8);   // first open today: 8 due
+  assert.equal(m[100], 8);
+  m = creditDueOffered(m, 100, 5);   // reopen later: 3 already done, 5 remain
+  assert.equal(m[100], 8);           // must NOT grow — same work, not new work
+  m = creditDueOffered(m, 100, 12);  // more cards fell due today
+  assert.equal(m[100], 12);          // grows to the real total
+  m = creditDueOffered(m, 101, 4);   // next day accumulates separately
+  assert.equal(totalDueOffered({ due_offered_by_day: m }), 16);
+});
+
+test("creditDueOffered does not mutate its input", () => {
+  const m = { 100: 8 };
+  const out = creditDueOffered(m, 100, 12);
+  assert.equal(m[100], 8);
+  assert.equal(out[100], 12);
+});
+
+test("relaunching the same day does not lower the on-schedule denominator", () => {
+  const deck = [{ id: "a" }];
+  const stateMap = { a: newCardState("a") };
+  for (let i = 0; i < 3; i++) updateSM2(stateMap.a, 5, sm2);
+  const base = { active_days: ["d1"], productive_reviews: 3, on_schedule_reviews: 3 };
+  // Naive accumulation would sum 8 + 5 = 13; per-day max keeps it at 8.
+  let m = creditDueOffered({}, 100, 8);
+  m = creditDueOffered(m, 100, 5);
+  const s = computeScore(deck, stateMap, { ...base, due_offered_by_day: m }, SETTINGS);
+  assert.equal(totalDueOffered({ due_offered_by_day: m }), 8);
+  assert.ok(s.engagement > 0);
+});
+
+test("totalDueOffered falls back to legacy scalar when no per-day map", () => {
+  assert.equal(totalDueOffered({ due_reviews_offered: 7 }), 7);
+  assert.equal(totalDueOffered({ due_offered_by_day: {}, due_reviews_offered: 7 }), 7);
 });
 
 /* ---- Session building ---- */
@@ -214,6 +333,20 @@ test("encode/decode round-trips state", () => {
   assert.equal(rest.b.attempts, 0);  // lazy-init default
   assert.equal(ract.intro_seen, true);
   assert.equal(ract.productive_reviews, 4);
+});
+
+test("due_offered_by_day round-trips; legacy scalar dr is ignored on decode", () => {
+  const cards = [{ id: "a" }];
+  const sm = { a: newCardState("a") };
+  updateSM2(sm.a, 5, sm2);
+  const enc = encodeState(sm, { intro_seen: true, daily_counts: {}, due_offered_by_day: { 100: 8, 101: 4 } });
+  assert.deepEqual(enc.a.dr, { 100: 8, 101: 4 });
+  const { activity } = decodeState(enc, cards, 2.5);
+  assert.deepEqual(activity.due_offered_by_day, { 100: 8, 101: 4 });
+  // A blob saved before the change stored dr as a number — must not crash.
+  const legacy = { ...enc, a: { ...enc.a, dr: 13 } };
+  const { activity: act2 } = decodeState(legacy, cards, 2.5);
+  assert.deepEqual(act2.due_offered_by_day, {});
 });
 
 test("decode treats unknown schema as fresh start", () => {

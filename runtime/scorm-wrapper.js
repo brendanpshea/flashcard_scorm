@@ -36,12 +36,22 @@
 
   const api = realAPI || makeStub();
   let initialized = false;
+  let sessionStart = 0;
+
+  // SCORM 2004 session_time is an ISO 8601 duration (e.g. "PT1H2M3S").
+  function iso8601Duration(ms) {
+    let s = Math.max(0, Math.floor(ms / 1000));
+    const h = Math.floor(s / 3600); s -= h * 3600;
+    const m = Math.floor(s / 60); s -= m * 60;
+    return "PT" + (h ? h + "H" : "") + (m ? m + "M" : "") + s + "S";
+  }
 
   const SCORM = {
     isStub: !realAPI,
     init() {
       if (initialized) return true;
       initialized = api.Initialize("") === "true";
+      if (initialized) sessionStart = Date.now();
       return initialized;
     },
     get(key) { return api.GetValue(key); },
@@ -49,6 +59,10 @@
     commit() { return api.Commit("") === "true"; },
     terminate() {
       if (!initialized) return true;
+      // Report time-on-task and ask the LMS to resume (not restart) next launch,
+      // so cmi.suspend_data is handed back on the next attempt.
+      api.SetValue("cmi.session_time", iso8601Duration(Date.now() - sessionStart));
+      api.SetValue("cmi.exit", "suspend");
       api.Commit("");
       const ok = api.Terminate("") === "true";
       initialized = false;

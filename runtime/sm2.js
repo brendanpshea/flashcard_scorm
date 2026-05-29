@@ -3,7 +3,21 @@
 // Dates are integer day numbers (UTC days since epoch) to keep suspend_data small.
 
 export const MS_PER_DAY = 86400000;
-export const today = () => Math.floor(Date.now() / MS_PER_DAY);
+
+// Day numbers key the whole schedule (due dates, active days, daily counts).
+// By default we use the *local* calendar day: UTC days roll over at midnight
+// UTC, so a student studying at 11pm in a western timezone would otherwise see
+// the session land on "tomorrow," splitting an active day and skewing streaks.
+// Set day_boundary: "utc" in class settings to force UTC (e.g. for tests or a
+// globally distributed cohort where a fixed boundary is preferable).
+let useLocalDay = true;
+export function configureDayBoundary(mode) {
+  useLocalDay = mode !== "utc";
+}
+export const today = () => {
+  const offsetMs = useLocalDay ? new Date().getTimezoneOffset() * 60000 : 0;
+  return Math.floor((Date.now() - offsetMs) / MS_PER_DAY);
+};
 
 export function newCardState(_cardId, startingEase = 2.5) {
   return {
@@ -47,14 +61,19 @@ export function isDue(state, now = today()) {
   return state.due <= now;
 }
 
-// Mastery is calendar-agnostic: it relies on the natural spacing SM-2
-// already enforces (correct_count >= 3 implies the card has been due, and
-// answered correctly, on at least 3 separate days). `repetitions >= 1`
-// excludes currently-lapsed cards — a card that just dropped back to a
-// 1-day interval isn't mastered, even if it has many lifetime corrects.
+// Mastery leans on the natural spacing SM-2 already enforces (correct_count >= 3
+// implies the card has been due, and answered correctly, on at least 3 separate
+// days). `repetitions >= 1` excludes currently-lapsed cards — a card that just
+// dropped back to a 1-day interval isn't mastered, even with many lifetime
+// corrects. `min_interval_days` (optional) adds an explicit interval gate: the
+// card's current interval must have grown to at least M days, so a class can
+// require the spacing to have demonstrably elapsed rather than inferring it.
 export function isMastered(state, requires) {
-  return state.correct_count >= requires.correct_count
-      && state.repetitions >= 1;
+  if (state.correct_count < requires.correct_count) return false;
+  if (state.repetitions < 1) return false;
+  if (requires.min_interval_days != null
+      && state.interval_days < requires.min_interval_days) return false;
+  return true;
 }
 
 export function buildStudyAhead(allCards, stateMap) {

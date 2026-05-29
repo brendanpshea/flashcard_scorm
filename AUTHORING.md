@@ -157,13 +157,23 @@ Each `{{key}}` in the `Q:` must have a corresponding `key: value` line below spe
 
 Keys may be short natural phrases such as `data link`; they do not need underscores or hyphens.
 
+A blank may accept more than one answer — separate alternates with `|`, or repeat the key on multiple lines. Both forms are equivalent:
+
+```markdown
+mode: cloze
+Q: The study of right and wrong conduct is called {{ethics}}.
+ethics: ethics | moral philosophy
+```
+
+Still prefer a single canonical answer when the context can disambiguate it; reach for alternates only when more than one phrasing is genuinely correct.
+
 ### Rules
 
 - **Blank the word that carries the meaning**, not a filler word. "{{Modus ponens}} is a rule of inference" tests the term; "Modus ponens is a {{rule}} of inference" tests trivia.
 - **Don't blank words that can be inferred from grammar.** "Modus ponens is {{a}} rule of inference" is useless.
 - **The unblanked part of the sentence should disambiguate the blank.** If the surrounding context allows multiple plausible answers, the card grades poorly.
 - **Capitalization is matched case-insensitively by default.** Don't worry about it.
-- Per-key cloze answers currently accept a single phrasing (no synonym lists per blank). If the blank could legitimately be filled multiple ways, either pick the canonical form and rephrase the sentence, or use typed mode.
+- **A blank can accept synonyms** via `|` or repeated key lines (see above), but only when several phrasings are truly correct. If a blank has many plausible fillers, the card is probably too open — tighten the sentence or use typed mode.
 
 ### Good cloze cards
 

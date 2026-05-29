@@ -5,13 +5,16 @@
 //   { v: 1,
 //     s: { [cardId]: { e, i, r, d, l, c, a } },   // only cards with attempts >= 1
 //     a: { f, x, ad, p, o, dr, dc } }
+//   (dr is a per-day map {day#: dueOffered}; older saves stored a scalar.)
 //
 // Fields:
 //   stateMap[card]: e=ease, i=interval_days, r=repetitions, d=due (day#),
 //                   l=lapses, c=correct_count, a=attempts
 //   activity: f=first_launch_day, x=intro_seen, ad=active_days[],
 //             p=productive_reviews, o=on_schedule_reviews,
-//             dr=due_reviews_offered, dc=daily_counts
+//             dr=due_offered_by_day (map), dc=daily_counts
+
+import { today } from "./sm2.js";
 
 export const SCHEMA_VERSION = 1;
 
@@ -42,8 +45,8 @@ export function encodeState(stateMap, activity) {
       ad: activity.active_days || [],
       p: activity.productive_reviews || 0,
       o: activity.on_schedule_reviews || 0,
-      dr: activity.due_reviews_offered || 0,
-      dc: pruneDailyCounts(activity.daily_counts || {}, activity.first_launch_day)
+      dr: activity.due_offered_by_day || {},
+      dc: pruneDailyCounts(activity.daily_counts || {})
     }
   };
 }
@@ -75,7 +78,8 @@ export function decodeState(blob, allCards, startingEase) {
     active_days: a.ad || [],
     productive_reviews: a.p || 0,
     on_schedule_reviews: a.o || 0,
-    due_reviews_offered: a.dr || 0,
+    // Per-day map since the relaunch-dedup change; ignore a legacy scalar.
+    due_offered_by_day: (a.dr && typeof a.dr === "object") ? a.dr : {},
     daily_counts: a.dc || {}
   });
   return { stateMap, activity, migrated: false };
@@ -92,14 +96,14 @@ function defaultActivity() {
     active_days: [],
     productive_reviews: 0,
     on_schedule_reviews: 0,
-    due_reviews_offered: 0,
+    due_offered_by_day: {},
     daily_counts: {}
   };
 }
 
 // Keep only the last 7 days of detailed counts plus today. Older days'
 // "was this an active day" bit lives in active_days already.
-function pruneDailyCounts(daily, firstLaunchDay) {
+function pruneDailyCounts(daily) {
   const cutoff = today() - 7;
   const out = {};
   for (const [k, v] of Object.entries(daily)) {
@@ -108,7 +112,6 @@ function pruneDailyCounts(daily, firstLaunchDay) {
   return out;
 }
 
-const today = () => Math.floor(Date.now() / 86400000);
 const round2 = (n) => Math.round(n * 100) / 100;
 
 export function byteSize(obj) { return new TextEncoder().encode(JSON.stringify(obj)).length; }

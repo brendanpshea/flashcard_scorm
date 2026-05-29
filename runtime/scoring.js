@@ -1,4 +1,10 @@
-// Score = mastery * (floor + (1-floor) * engagement) * completion_factor
+// Score = mastery * (floor + (1-floor) * engagement)
+//
+// Completion is intentionally NOT a grade factor: mastery = mastered/total
+// already has the whole deck in its denominator, so cherry-picking the easy
+// cards is already capped by mastery itself. Completion is still computed and
+// returned — it drives the progress bar and cmi.progress_measure (progress is
+// not the same thing as the grade).
 import { isMastered } from "./sm2.js";
 
 // Target active days: explicit setting wins; otherwise derived from deck size
@@ -12,6 +18,44 @@ export function resolveTargetActiveDays(totalCards, settings) {
   const introDays = Math.ceil(totalCards / newLimit);
   const reviewTail = 7;
   return introDays + reviewTail;
+}
+
+// Consecutive-days study streak ending today (or yesterday — the streak is
+// still "alive" until the day rolls over). Pure: takes the active-days list
+// and the current day number. Powers the habit-loop badge in the header.
+export function dayStreak(activeDays, todayNum) {
+  if (!activeDays || !activeDays.length) return 0;
+  const days = new Set(activeDays);
+  let cursor;
+  if (days.has(todayNum)) cursor = todayNum;
+  else if (days.has(todayNum - 1)) cursor = todayNum - 1;  // not yet active today, but yesterday was
+  else return 0;                                            // missed yesterday → streak broken
+  let streak = 0;
+  while (days.has(cursor)) { streak++; cursor--; }
+  return streak;
+}
+
+// Record how many due reviews were offered on a given day, keyed by day so
+// that reopening the SCO mid-day doesn't double-count the same due cards.
+// We keep the per-day MAX: the count can only grow within a day (more cards
+// fall due), and a relaunch that sees fewer remaining due cards must not
+// shrink it. Returns a new map; never mutates the input.
+export function creditDueOffered(byDay, day, dueCountToday) {
+  const next = { ...(byDay || {}) };
+  next[day] = Math.max(next[day] || 0, dueCountToday);
+  return next;
+}
+
+// Total due reviews offered across the run. Sums the per-day map; falls back
+// to the legacy scalar counter for state saved before the per-day change.
+export function totalDueOffered(log) {
+  const byDay = log.due_offered_by_day;
+  if (byDay && typeof byDay === "object") {
+    let sum = 0;
+    for (const v of Object.values(byDay)) sum += v;
+    if (sum > 0) return sum;
+  }
+  return log.due_reviews_offered || 0;
 }
 
 export function computeScore(cards, stateMap, activityLog, settings) {
@@ -43,8 +87,8 @@ export function computeScore(cards, stateMap, activityLog, settings) {
   const floor = settings.scoring.engagement_floor;
   const engMultiplier = floor + (1 - floor) * engagement;
 
-  // Grade sent to D2L — unchanged.
-  const final = mastery * engMultiplier * completion;
+  // Grade sent to D2L. Completion is deliberately not a factor (see top of file).
+  const final = mastery * engMultiplier;
   return {
     final,
     mastery,
@@ -65,7 +109,7 @@ function computeEngagement(log, totalCards, settings) {
   const activeDays = (log.active_days || []).length;
   const productive = log.productive_reviews || 0;
   const onSched = log.on_schedule_reviews || 0;
-  const due = Math.max(1, log.due_reviews_offered || 1);
+  const due = Math.max(1, totalDueOffered(log));
 
   const consistency = Math.min(1, activeDays / Math.max(1, targetActiveDays));
   const volume = Math.min(1, productive / Math.max(1, targetReviews));

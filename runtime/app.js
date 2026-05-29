@@ -1,6 +1,6 @@
-import { newCardState, updateSM2, buildSession, buildStudyAhead, isMastered, today } from "./sm2.js";
+import { newCardState, updateSM2, buildSession, buildStudyAhead, isMastered, today, configureDayBoundary } from "./sm2.js";
 import { gradeAnswer } from "./grader.js";
-import { computeScore } from "./scoring.js";
+import { computeScore, creditDueOffered, dayStreak } from "./scoring.js";
 import { encodeState, decodeState, byteSize, SIZE_WARN_BYTES_2004 } from "./persistence.js";
 import { mergeSettings } from "./defaults.js";
 
@@ -19,6 +19,7 @@ let currentIsNew = false;
 let cardShownAt = 0;
 let sessionStartedAt = 0;
 let sessionStreak = 0;
+let sessionTotal = 0;             // cards queued at the start of this session
 let lastFocusBeforeModal = null;
 
 async function main() {
@@ -29,6 +30,7 @@ async function main() {
   ]);
   deck = deckJson.deck;
   settings = mergeSettings(overrides);
+  configureDayBoundary(settings.schedule.day_boundary);  // before any today() / hydrate()
   $("#deck-title").textContent = deck.title;
   if (settings.course) {
     $("#course-tag").textContent = settings.course;
@@ -131,7 +133,12 @@ function startSession() {
   const today = todayKey();
   const todayCounts = activity.daily_counts[today] || { new: 0, reviews: 0, minutes: 0 };
   session = buildSession(deck.cards, stateMap, settings, todayCounts);
-  activity.due_reviews_offered += session.reviews.length;
+  // Due work owed today = reviews already done today + those still queued.
+  // Credit per day (keeping the max) so reopening the SCO can't inflate the
+  // on-schedule denominator and penalize a student for studying diligently.
+  const dueOfferedToday = (todayCounts.reviews || 0) + session.reviews.length;
+  activity.due_offered_by_day = creditDueOffered(activity.due_offered_by_day, today, dueOfferedToday);
+  sessionTotal = session.reviews.length + session.new.length;
   $("#study-mode-banner").hidden = true;
   showNextCard();
 }
@@ -150,7 +157,22 @@ function showNextCard() {
     currentIsNew = !pickReview;
   }
   renderCard(currentCard);
+  updateSessionProgress();
   cardShownAt = Date.now();
+}
+
+// Session finish-line: a fill bar + "N left" so a session is a completable
+// task, not an open-ended grind. Hidden during study-ahead (it's unbounded
+// and ungraded — the banner already explains that mode).
+function updateSessionProgress() {
+  const wrap = $("#session-progress");
+  if (studyAheadQueue || !sessionTotal) { wrap.hidden = true; return; }
+  const queued = session.reviews.length + session.new.length;  // not yet seen
+  const left = queued + 1;                                      // + the current card
+  const done = sessionTotal - left;
+  wrap.hidden = false;
+  $("#session-fill").style.width = (100 * done / sessionTotal).toFixed(0) + "%";
+  $("#session-left").textContent = left === 1 ? "Last card!" : `${left} cards left`;
 }
 
 function renderCard(card) {
@@ -160,13 +182,14 @@ function renderCard(card) {
   $("#next-btn").disabled = true;
   $("#submit-btn").hidden = false;
   $("#study-ahead-btn").hidden = true;
+  $("#enter-hint").hidden = false;
   $("#card").classList.remove("flash-ok", "flash-bad");
 
   const body = $("#card-body");
-  body.innerHTML = "";
+  body.innerHTML = `<div class="mode-cue">${cueFor(card)}</div>`;
 
   if (card.mode === "typed") {
-    body.innerHTML = `
+    body.innerHTML += `
       <p class="prompt">${escapeHtml(card.prompt)}</p>
       <label class="visually-hidden" for="answer-input">Your answer</label>
       <input id="answer-input" type="text" autocomplete="off" autofocus aria-label="Your answer" />
@@ -176,13 +199,13 @@ function renderCard(card) {
     const html = parts.map(p => {
       const m = p.match(/^\{\{([^}]+)\}\}$/);
       if (!m) return escapeHtml(p);
-      return `<input class="cloze-input" data-key="${m[1]}" type="text" autocomplete="off" aria-label="Fill in ${escapeAttr(m[1])}" />`;
+      return `<input class="cloze-input" data-key="${escapeAttr(m[1])}" type="text" autocomplete="off" aria-label="Fill in ${escapeAttr(m[1])}" />`;
     }).join("");
-    body.innerHTML = `<p class="prompt">${html}</p>`;
+    body.innerHTML += `<p class="prompt">${html}</p>`;
   } else if (card.mode === "mc") {
     const options = [card.correct, ...card.distractors];
     if (card.shuffle !== false) shuffle(options);
-    body.innerHTML = `
+    body.innerHTML += `
       <p class="prompt" id="mc-prompt">${escapeHtml(card.prompt)}</p>
       <div class="choices" role="radiogroup" aria-labelledby="mc-prompt">
         ${options.map(o =>
@@ -193,6 +216,26 @@ function renderCard(card) {
   }
   const first = body.querySelector("input");
   if (first) first.focus();
+}
+
+// Short "what to do" label shown above each prompt.
+function cueFor(card) {
+  if (card.mode === "mc") return "Choose one";
+  if (card.mode === "cloze") {
+    const blanks = (card.text.match(/\{\{/g) || []).length;
+    return blanks > 1 ? "Fill in the blanks" : "Fill in the blank";
+  }
+  return "Type your answer";
+}
+
+// True when the student submitted nothing meaningful: empty typed/MC input,
+// or every cloze blank left empty. A partially filled cloze counts as an
+// attempt (they answered what they knew) and is not guarded.
+function isBlankResponse(card, response) {
+  if (card.mode === "cloze") {
+    return Object.values(response || {}).every(v => !String(v).trim());
+  }
+  return !String(response ?? "").trim();
 }
 
 function readResponse(card) {
@@ -212,17 +255,36 @@ function onSubmit() {
   if (!currentCard) return;
   const latency = Date.now() - cardShownAt;
   const response = readResponse(currentCard);
+
+  // An empty/whitespace-only answer is almost always an accidental Enter, and
+  // grading it tanks the card's interval. Confirm before treating it as a miss.
+  if (isBlankResponse(currentCard, response)
+      && !confirm("Submit without answering? This card will be marked incorrect.")) {
+    const first = $("#card-body").querySelector("input");
+    if (first) first.focus();
+    return;
+  }
+
   const result = gradeAnswer(currentCard, response, latency, settings);
   const { correct } = result;
 
   // In study-ahead, never mutate SM-2 state or any grade-affecting counters.
   if (!studyAheadQueue) {
+    const masteryReq = settings.scoring.mastery_requires;
+    const wasMastered = isMastered(stateMap[currentCard.id], masteryReq);
     updateSM2(stateMap[currentCard.id], result.quality, settings.sm2);
+    if (!wasMastered && isMastered(stateMap[currentCard.id], masteryReq)) {
+      const n = deck.cards.reduce((acc, c) => acc + (isMastered(stateMap[c.id], masteryReq) ? 1 : 0), 0);
+      showToast(`🎯 Mastered! ${n} of ${deck.cards.length}`, "mastered");
+    }
     const today = todayKey();
     const counts = activity.daily_counts[today] || { new: 0, reviews: 0, minutes: 0, practiced: 0, correct: 0 };
     if (currentIsNew) counts.new += 1; else counts.reviews += 1;
     counts.practiced = (counts.practiced || 0) + 1;
     if (correct) counts.correct = (counts.correct || 0) + 1;
+    // Productive = spent real time (latency filter), right or wrong. Tracked
+    // per day so a short-but-focused session can still earn an active day.
+    if (result.productive) counts.productive = (counts.productive || 0) + 1;
     activity.daily_counts[today] = counts;
     if (result.productive && correct) activity.productive_reviews += 1;
     if (!currentIsNew && correct) activity.on_schedule_reviews += 1;
@@ -296,6 +358,21 @@ function flashCard(correct) {
   el.classList.add(correct ? "flash-ok" : "flash-bad");
 }
 
+// Transient celebratory toast (auto-dismisses). Additive to the inline
+// feedback; used for milestone moments like mastering a card.
+function showToast(message, variant = "") {
+  const region = $("#toast-region");
+  const el = document.createElement("div");
+  el.className = "toast" + (variant ? ` ${variant}` : "");
+  el.textContent = message;
+  region.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("show"));
+  setTimeout(() => {
+    el.classList.remove("show");
+    setTimeout(() => el.remove(), 300);
+  }, 2600);
+}
+
 function updateStreak(correct) {
   if (correct) {
     sessionStreak += 1;
@@ -305,7 +382,18 @@ function updateStreak(correct) {
   updateStreakDisplay();
 }
 
-function updateStreakDisplay() { $("#streak-count").textContent = sessionStreak; }
+function updateStreakDisplay() {
+  // Session "on a roll" badge: only surfaces once it's actually a run, so it
+  // reads as a reward rather than a permanent "★ 0".
+  $("#streak-count").textContent = sessionStreak;
+  $("#streak").hidden = sessionStreak < 2;
+}
+
+function updateDayStreakDisplay() {
+  const streak = dayStreak(activity.active_days, todayKey());
+  $("#day-streak-count").textContent = streak;
+  $("#day-streak").hidden = streak < 1;
+}
 
 function lockoutNext() {
   const submit = $("#submit-btn");
@@ -330,8 +418,11 @@ function recordSessionMinutes() {
   const counts = activity.daily_counts[today] || { new: 0, reviews: 0, minutes: 0 };
   counts.minutes += minutesThisTick;
   activity.daily_counts[today] = counts;
-  if (counts.minutes >= settings.engagement.min_session_minutes_for_active_day
-      && !activity.active_days.includes(today)) {
+  // An active day is earned by enough time on task OR enough genuine cards —
+  // whichever comes first — so a focused 3-minute burst isn't discarded.
+  const enoughTime = counts.minutes >= settings.engagement.min_session_minutes_for_active_day;
+  const enoughCards = (counts.productive || 0) >= settings.engagement.min_cards_for_active_day;
+  if ((enoughTime || enoughCards) && !activity.active_days.includes(today)) {
     activity.active_days.push(today);
   }
 }
@@ -347,6 +438,8 @@ function enterStudyAhead() {
 }
 
 function renderStudyAheadDone() {
+  $("#session-progress").hidden = true;
+  $("#enter-hint").hidden = true;
   $("#card-body").innerHTML = `<p class="prompt">No more cards to preview. Nice work.</p>`;
   $("#submit-btn").hidden = true;
   $("#next-btn").hidden = true;
@@ -355,9 +448,15 @@ function renderStudyAheadDone() {
 
 function renderDone() {
   const ahead = buildStudyAhead(deck.cards, stateMap);
+  $("#session-progress").hidden = true;
+  $("#enter-hint").hidden = true;
+  const streak = dayStreak(activity.active_days, todayKey());
+  const streakLine = streak >= 2
+    ? `<p style="color: var(--accent); font-weight: 600;">🔥 ${streak}-day streak — see you tomorrow to keep it alive!</p>`
+    : `<p style="color: var(--muted);">Come back tomorrow — your score rewards studying across days, not cramming in one.</p>`;
   $("#card-body").innerHTML = `
     <p class="prompt">🎉 No more cards due today.</p>
-    <p style="color: var(--muted);">Come back tomorrow — your engagement score rewards studying across days, not cramming in one.</p>
+    ${streakLine}
   `;
   $("#submit-btn").hidden = true;
   $("#next-btn").hidden = true;
@@ -374,6 +473,7 @@ function resetProgress() {
     "Your D2L score will reset to 0. This can't be undone."
   );
   if (!ok) return;
+  $("#intro").hidden = true;   // Reset is triggered from inside the help modal
   stateMap = {};
   for (const card of deck.cards) {
     stateMap[card.id] = newCardState(card.id, settings.sm2.starting_ease);
@@ -384,7 +484,7 @@ function resetProgress() {
     active_days: [],
     productive_reviews: 0,
     on_schedule_reviews: 0,
-    due_reviews_offered: 0,
+    due_offered_by_day: {},
     daily_counts: {}
   };
   commit();
@@ -395,6 +495,7 @@ function resetProgress() {
 /* ---------- Stats / persistence ---------- */
 
 function refreshStats() {
+  updateDayStreakDisplay();
   const score = computeScore(deck.cards, stateMap, activity, settings);
   const today = todayKey();
   const counts = activity.daily_counts[today] || { new: 0, reviews: 0, minutes: 0, practiced: 0, correct: 0 };
@@ -412,13 +513,16 @@ function refreshStats() {
   $("#stat-new").textContent = `${counts.new} / ${settings.schedule.daily_new_card_limit}`;
   $("#stat-reviews").textContent = `${counts.reviews} / ${settings.schedule.daily_review_limit}`;
 
-  // Long-term progress.
+  // Long-term progress. Mastered is a count (motivating as it climbs), shown
+  // always. Engagement/completion are grade *fractions* that are near-zero by
+  // design on day 1 — showing "2% / 0%" reads as failure, so we gate them
+  // behind the same "meaningful" check as the score.
+  const scoreIsMeaningful = score.mastered_count >= 1 || score.completion >= 0.2;
   $("#stat-mastery").textContent = `${score.mastered_count}/${score.total_cards}`;
-  $("#stat-engagement").textContent = (score.engagement * 100).toFixed(0) + "%";
-  $("#stat-completion").textContent = (score.completion * 100).toFixed(0) + "%";
+  $("#stat-engagement").textContent = scoreIsMeaningful ? (score.engagement * 100).toFixed(0) + "%" : "—";
+  $("#stat-completion").textContent = scoreIsMeaningful ? (score.completion * 100).toFixed(0) + "%" : "—";
 
   // Score display: narrative for new learners, number once it's meaningful.
-  const scoreIsMeaningful = score.mastered_count >= 1 || score.completion >= 0.2;
   const scoreEl = $("#stat-final");
   const narrEl = $("#score-narrative");
   if (scoreIsMeaningful) {
